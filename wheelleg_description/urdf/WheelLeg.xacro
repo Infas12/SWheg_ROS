@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="WheelLeg">
+
+  <xacro:macro name="LeftWheelLeg" params="name x y z">
+
+    <link name="${name}">
+      <inertial>
+        <origin
+          xyz="4.8179E-09 1.5313E-06 0.045042"
+          rpy="0 0 0" />
+        <mass
+          value="0.075119" />
+        <inertia
+          ixx="0.00010565"
+          ixy="-1.0649E-07"
+          ixz="-2.3479E-12"
+          iyy="2.7546E-05"
+          iyz="-8.9308E-10"
+          izz="9.6655E-05" />
+      </inertial>
+      <visual>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://wheelleg_description/meshes/Left.STL" />
+        </geometry>
+        <material
+          name="">
+          <color
+            rgba="1 1 1 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://wheelleg_description/meshes/Left.STL" />
+        </geometry>
+      </collision>
+    </link>
+
+    <joint name="${name}_Joint" type="continuous">
+      <origin
+        xyz="${x} ${y} ${z}"
+        rpy="1.5708 -1.5708 3.1416" />
+      <parent
+        link="base_link" />
+      <child
+        link="${name}" />
+      <axis
+        xyz="0 0 1" />
+      <limit effort="2.8" velocity="30"/>
+    </joint>
+
+    <link name="${name}RA">
+      <inertial>
+        <origin
+          xyz="0.060620953877514 -0.0509052185223456 -0.0160797180106055"
+          rpy="0 0 0" />
+        <mass
+          value="0.102065831041357" />
+        <inertia
+          ixx="0.000107618762660542"
+          ixy="6.4058045299092E-05"
+          ixz="1.40721471251035E-07"
+          iyy="0.000426511611787524"
+          iyz="-2.25569567809916E-07"
+          izz="0.000513500369211842" />
+      </inertial>
+      <visual>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://wheelleg_description/meshes/LeftRimA.STL" />
+        </geometry>
+        <material
+          name="">
+          <color
+            rgba="1 1 1 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://wheelleg_description/meshes/LeftRimA.STL" />
+        </geometry>
+      </collision>
+    </link>
+
+    <joint name="${name}RA_Joint" type="continuous">
+      <origin      
+        xyz="0 -0.08 0.038242"
+        rpy="3.1416 0 1.5708" />
+      <parent
+        link="${name}" />
+      <child
+        link="${name}RA" />
+      <axis
+        xyz="0 0 1" />
+      <dynamics damping="0.2" friction="0.0"/> 
+      <limit effort="2.8" velocity="30"/>
+    </joint>
+
+    <link name="${name}RB">
+      <inertial>
+        <origin
+          xyz="0.060620953877514 -0.0509052185223458 -0.0160797180106054"
+          rpy="0 0 0" />
+        <mass
+          value="0.102065831041357" />
+        <inertia
+          ixx="0.000107618762660542"
+          ixy="6.4058045299092E-05"
+          ixz="1.40721471251074E-07"
+          iyy="0.000426511611787524"
+          iyz="-2.2556956780994E-07"
+          izz="0.000513500369211842" />
+      </inertial>
+      <visual>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://wheelleg_description/meshes/LeftRimB.STL" />
+        </geometry>
+        <material
+          name="">
+          <color
+            rgba="1 1 1 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://wheelleg_description/meshes/LeftRimB.STL" />
+        </geometry>
+      </collision>
+    </link>
+
+    <joint name="${name}RB_Joint" type="continuous">
+      <origin
+        xyz="0 0.08 0.038242"
+        rpy="3.1416 0 -1.5708" />
+      <parent
+        link="${name}" />
+      <child
+        link="${name}RB" />
+      <axis
+        xyz="0 0 1" />
+      <dynamics damping="0.2" friction="0.0"/> 
+      <limit effort="2.8" velocity="30"/>
+    </joint>
+
+  </xacro:macro>
+
+  <xacro:macro name="RightWheelLeg" params="name x y z">
+
+    <link name="${name}">
+      <inertial>
+        <origin
+          xyz="4.8179E-09 1.5313E-06 0.045042"
+          rpy="0 0 0" />
+        <mass
+          value="0.075119" />
+        <inertia
+          ixx="0.00010565"
+          ixy="-1.0649E-07"
+          ixz="-2.3479E-12"
+          iyy="2.7546E-05"
+          iyz="-8.9308E-10"
+          izz="9.6655E-05" />
+      </inertial>
+      <visual>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://wheelleg_description/meshes/Right.STL" />
+        </geometry>
+        <material
+          name="">
+          <color
+            rgba="1 1 1 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://wheelleg_description/meshes/Right.STL" />
+        </geometry>
+      </collision>
+    </link>
+    
+    <joint name="${name}_Joint" type="continuous">
+      <origin
+        xyz="${x} ${y} ${z}"
+        rpy="1.5708 1.5708 0.0" />
+      <parent
+        link="base_link" />
+      <child
+        link="${name}" />
+      <axis
+        xyz="0 0 1" />
+      <limit effort="2.8" velocity="30"/>
+    </joint>
+
+    <link name="${name}RA">
+      <inertial>
+        <origin
+          xyz="0.0606209538775138 -0.0509052185223455 0.0159343419031902"
+          rpy="0 0 0" />
+        <mass
+          value="0.102065831041357" />
+        <inertia
+          ixx="0.000107618762660542"
+          ixy="6.40580452990925E-05"
+          ixz="1.40721471251091E-07"
+          iyy="0.000426511611787524"
+          iyz="-2.25569567809853E-07"
+          izz="0.000513500369211842" />
+      </inertial>
+      <visual>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://wheelleg_description/meshes/RightRimA.STL" />
+        </geometry>
+        <material
+          name="">
+          <color
+            rgba="1 1 1 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://wheelleg_description/meshes/RightRimA.STL" />
+        </geometry>
+      </collision>
+    </link>
+
+    <joint name="${name}RA_Joint" type="continuous">
+      <origin
+        xyz="0 -0.08 0.038244"
+        rpy="0 0 1.5708" />
+      <parent
+        link="${name}" />
+      <child
+        link="${name}RA" />
+      <axis
+        xyz="0 0 1" />
+
+      <dynamics damping="0.2" friction="0.0"/> 
+      <limit effort="2.8" velocity="30"/>
+    </joint>
+    
+    <link name="${name}RB">
+      <inertial>
+        <origin
+          xyz="0.060620953877514 -0.050905218522346 0.0159343419031902"
+          rpy="0 0 0" />
+        <mass
+          value="0.102065831041357" />
+        <inertia
+          ixx="0.000107618762660542"
+          ixy="6.40580452990932E-05"
+          ixz="1.40721471251035E-07"
+          iyy="0.000426511611787523"
+          iyz="-2.25569567810021E-07"
+          izz="0.00051350036921184" />
+      </inertial>
+      <visual>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://wheelleg_description/meshes/RightRimB.STL" />
+        </geometry>
+        <material
+          name="">
+          <color
+            rgba="1 1 1 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://wheelleg_description/meshes/RightRimB.STL" />
+        </geometry>
+      </collision>
+    </link>
+    
+    <joint name="${name}RB_Joint" type="continuous">
+      <origin
+        xyz="0 0.08 0.038244"
+        rpy="0 0 -1.5708" />
+      <parent
+        link="${name}" />
+      <child
+        link="${name}RB" />
+      <axis
+        xyz="0 0 1" />
+      <dynamics damping="0.2" friction="0.0"/> 
+      <limit effort="2.8" velocity="30"/>
+    </joint>
+
+  </xacro:macro>
+
+  <link name="base_link">
+    <inertial>
+      <origin xyz="0.05 0.05 0.05" rpy="0 0 0"/>
+      <mass value="1"/>
+      <inertia ixx="0.00167"  ixy="0"  ixz="0" iyy="0.00167" iyz="0" izz="0.00167" />
+    </inertial>
+
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <box size="0.1 0.1 0.1" />
+      </geometry>
+      <material name="Cyan">
+        <color rgba="0 1.0 1.0 1.0"/>
+      </material>
+    </visual>
+
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.1 0.1 0.1" />
+      </geometry>
+    </collision>
+
+  </link>
+
+  <xacro:LeftWheelLeg name="LF" x="0.4" y="0.2" z="0.02" />
+  <xacro:LeftWheelLeg name="LM" x="0" y="0.3" z="0.02" />
+  <xacro:LeftWheelLeg name="LB" x="-0.4" y="0.2" z="0.02" />
+
+  <xacro:RightWheelLeg name="RF" x="0.4" y="-0.2" z="0.02" />
+  <xacro:RightWheelLeg name="RM" x="0" y="-0.3" z="0.02" />
+  <xacro:RightWheelLeg name="RB" x="-0.4" y="-0.2" z="0.02" />
+
+  <!--load gazebo specific configuration and plugins-->
+  <xacro:include filename="$(find wheelleg_description)/urdf/WheelLeg.gazebo"/>
+
+</robot>

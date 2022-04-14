@@ -1,0 +1,25 @@
+<launch>
+  <arg
+    name="model" />
+  <node
+    name="tf_footprint_base"
+    pkg="tf"
+    type="static_transform_publisher"
+    args="0 0 0 0 0 0 base_link base_footprint 40" />
+  <param 
+    name="robot_description" 
+    command="$(find xacro)/xacro.py --inorder $(find wheelleg_description)/urdf/WheelLeg.xacro" />
+  <node
+    name="joint_state_publisher_gui"
+    pkg="joint_state_publisher_gui"
+    type="joint_state_publisher_gui" />
+  <node
+    name="robot_state_publisher"
+    pkg="robot_state_publisher"
+    type="robot_state_publisher" />
+  <node
+    name="rviz"
+    pkg="rviz"
+    type="rviz"
+    args="-d $(find wheelleg_description)/urdf.rviz" />
+</launch>

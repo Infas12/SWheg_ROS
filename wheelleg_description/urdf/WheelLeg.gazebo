@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!--load control interface for robot-->
+  <gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+      <robotNamespace>/WheelLeg</robotNamespace>
+    </plugin>
+  </gazebo>
+
+  <!--add transmission to joints-->
+  <xacro:macro name="rimJointConfig" params="name">
+    
+    <transmission name="tran_${name}">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="${name}_Joint">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="motor_${name}">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+    </transmission>
+    
+    <gazebo reference="${name}">
+      <material>Gazebo/Black</material>
+    
+    </gazebo>    
+  </xacro:macro>
+
+  <xacro:macro name="wheelLegJointConfig" params="name">
+    
+    <transmission name="tran_${name}">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="${name}_Joint">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="motor_${name}">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+    </transmission>
+    
+    <gazebo reference="${name}">
+      <material>Gazebo/White</material>
+    </gazebo>
+
+    <xacro:rimJointConfig name="${name}RA"/>
+    <xacro:rimJointConfig name="${name}RB"/>  
+  </xacro:macro>
+
+  <xacro:wheelLegJointConfig name="LF" />
+  <xacro:wheelLegJointConfig name="LM" />
+  <xacro:wheelLegJointConfig name="LB" />
+
+  <xacro:wheelLegJointConfig name="RF" />
+  <xacro:wheelLegJointConfig name="RM" />
+  <xacro:wheelLegJointConfig name="RB" />
+
+</robot>
