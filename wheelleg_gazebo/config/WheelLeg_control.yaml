@@ -8,77 +8,93 @@ WheelLeg:
   RB_position_controller:
     type: effort_controllers/JointPositionController
     joint: RB_Joint
-    pid: {p: 0.0, i: 0.00, d: 0.0, i_clamp_min: -100.0, i_clamp_max: 100.0}
+    pid:   {p: 100.0, i: 0.1, d: 0.1, i_clamp_min: -50.0, i_clamp_max: 50.0}
+
   RF_position_controller:
     type: effort_controllers/JointPositionController
     joint: RF_Joint
-    pid: {p: 0.0, i: 0.00, d: 0.0, i_clamp_min: -100.0, i_clamp_max: 100.0}
+    pid:   {p: 100.0, i: 0.1, d: 0.1, i_clamp_min: -50.0, i_clamp_max: 50.0}
+
   LB_position_controller:
     type: effort_controllers/JointPositionController
     joint: LB_Joint
-    pid: {p: 0.0, i: 0.00, d: 0.0, i_clamp_min: -100.0, i_clamp_max: 100.0}
+    pid:   {p: 100.0, i: 0.1, d: 0.1, i_clamp_min: -50.0, i_clamp_max: 50.0}
+
   LF_position_controller:
     type: effort_controllers/JointPositionController
     joint: LF_Joint
-    pid: {p: 0.0, i: 0.00, d: 0.0, i_clamp_min: -100.0, i_clamp_max: 100.0}
+    pid:   {p: 100.0, i: 0.1, d: 0.1, i_clamp_min: -50.0, i_clamp_max: 50.0}
+
   LM_position_controller:
     type: effort_controllers/JointPositionController
     joint: LM_Joint
-    pid: {p: 0.0, i: 0.00, d: 0.0, i_clamp_min: -100.0, i_clamp_max: 100.0}
+    pid:   {p: 100.0, i: 0.1, d: 0.1, i_clamp_min: -50.0, i_clamp_max: 50.0}
+
   RM_position_controller:
     type: effort_controllers/JointPositionController
     joint: RM_Joint
-    pid: {p: 0.0, i: 0.00, d: 0.0, i_clamp_min: -100.0, i_clamp_max: 100.0}
+    pid:   {p: 100.0, i: 0.1, d: 0.1, i_clamp_min: -50.0, i_clamp_max: 50.0}
 
-  RBRA_position_controller:
-    type: effort_controllers/JointPositionController
-    joint: RBRA_Joint
-    pid: {p: 20.0, i: 0.001, d: 0.0, i_clamp_min: -100.0, i_clamp_max: 100.0}
-
-  RFRA_position_controller:
-    type: effort_controllers/JointPositionController
-    joint: RFRA_Joint
-    pid: {p: 20.0, i: 0.001, d: 0.0, i_clamp_min: -100.0, i_clamp_max: 100.0}
 
   LBRA_position_controller:
-    type: effort_controllers/JointPositionController
+    type: velocity_controllers/JointPositionController
     joint: LBRA_Joint
-    pid: {p: 20.0, i: 0.001, d: 0.0, i_clamp_min: -100.0, i_clamp_max: 100.0}
+    pid:   {p: 100.0, i: 0.1, d: 0.1, i_clamp_min: -50.0, i_clamp_max: 50.0}
 
   LFRA_position_controller:
-    type: effort_controllers/JointPositionController
+    type: velocity_controllers/JointPositionController
     joint: LFRA_Joint
-    pid: {p: 20.0, i: 0.001, d: 0.0, i_clamp_min: -100.0, i_clamp_max: 100.0}
+    pid:   {p: 100.0, i: 0.1, d: 0.1, i_clamp_min: -50.0, i_clamp_max: 50.0}
+
   LMRA_position_controller:
-    type: effort_controllers/JointPositionController
+    type: velocity_controllers/JointPositionController
     joint: LMRA_Joint
-    pid: {p: 20.0, i: 0.001, d: 0.0, i_clamp_min: -100.0, i_clamp_max: 100.0}
+    pid:   {p: 100.0, i: 0.1, d: 0.1, i_clamp_min: -50.0, i_clamp_max: 50.0}
+
+  RBRA_position_controller:
+    type: velocity_controllers/JointPositionController
+    joint: RBRA_Joint
+    pid:   {p: 100.0, i: 0.1, d: 0.1, i_clamp_min: -50.0, i_clamp_max: 50.0}
+
+
+
+  RFRA_position_controller:
+    type: velocity_controllers/JointPositionController
+    joint: RFRA_Joint
+    pid:   {p: 100.0, i: 0.1, d: 0.1, i_clamp_min: -50.0, i_clamp_max: 50.0}
+    
   RMRA_position_controller:
-    type: effort_controllers/JointPositionController
+    type: velocity_controllers/JointPositionController
     joint: RMRA_Joint
-    pid: {p: 20.0, i: 0.001, d: 0.0, i_clamp_min: -100.0, i_clamp_max: 100.0}
+    pid:   {p: 100.0, i: 0.1, d: 0.1, i_clamp_min: -50.0, i_clamp_max: 50.0}
 
   RBRB_position_controller:
-    type: effort_controllers/JointPositionController
+    type: velocity_controllers/JointPositionController
     joint: RBRB_Joint
-    pid: {p: 20.0, i: 0.001, d: 0.0, i_clamp_min: -100.0, i_clamp_max: 100.0}
+    pid:   {p: 100.0, i: 0.1, d: 0.1, i_clamp_min: -50.0, i_clamp_max: 50.0}
+
   RFRB_position_controller:
-    type: effort_controllers/JointPositionController
+    type: velocity_controllers/JointPositionController
     joint: RFRB_Joint
-    pid: {p: 20.0, i: 0.001, d: 0.0, i_clamp_min: -100.0, i_clamp_max: 100.0}
+    pid:   {p: 100.0, i: 0.1, d: 0.1, i_clamp_min: -50.0, i_clamp_max: 50.0}
+    
   LBRB_position_controller:
-    type: effort_controllers/JointPositionController
+    type: velocity_controllers/JointPositionController
     joint: LBRB_Joint
-    pid: {p: 20.0, i: 0.001, d: 0.0, i_clamp_min: -100.0, i_clamp_max: 100.0}
+    pid:   {p: 100.0, i: 0.1, d: 0.1, i_clamp_min: -50.0, i_clamp_max: 50.0}
+    
   LFRB_position_controller:
-    type: effort_controllers/JointPositionController
+    type: velocity_controllers/JointPositionController
     joint: LFRB_Joint
-    pid: {p: 20.0, i: 0.001, d: 0.0, i_clamp_min: -100.0, i_clamp_max: 100.0}
+    pid:   {p: 100.0, i: 0.1, d: 0.1, i_clamp_min: -50.0, i_clamp_max: 50.0}
+    
   LMRB_position_controller:
-    type: effort_controllers/JointPositionController
+    type: velocity_controllers/JointPositionController
     joint: LMRB_Joint
-    pid: {p: 20.0, i: 0.001, d: 0.0, i_clamp_min: -100.0, i_clamp_max: 100.0}
+    pid:   {p: 100.0, i: 0.1, d: 0.1, i_clamp_min: -50.0, i_clamp_max: 50.0}
+    
   RMRB_position_controller:
-    type: effort_controllers/JointPositionController
+    type: velocity_controllers/JointPositionController
     joint: RMRB_Joint
-    pid: {p: 20.0, i: 0.001, d: 0.0, i_clamp_min: -100.0, i_clamp_max: 100.0}
+    pid:   {p: 100.0, i: 0.1, d: 0.1, i_clamp_min: -50.0, i_clamp_max: 50.0}
+

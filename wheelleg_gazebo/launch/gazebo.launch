@@ -1,9 +1,10 @@
 <launch>
 
   <include
-    file="$(find gazebo_ros)/launch/empty_world.launch" >
+    file="$(find wheelleg_gazebo)/launch/empty_world.launch" >
     <arg name="verbose" value="true" />
     <arg name="paused" value="true" />
+    <arg name="world_name" value="$(find wheelleg_gazebo)/world/empty.world"/>
   </include>
 
   <node
