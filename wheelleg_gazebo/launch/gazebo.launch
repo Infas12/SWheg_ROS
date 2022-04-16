@@ -34,6 +34,11 @@
     file="$(find wheelleg_gazebo)/config/WheelLeg_control.yaml" 
     command="load"/>
 
+  <node
+    name = "chassisGazeboInterface"
+    pkg  = "wheelleg_gazebo"
+    type = "ChassisGazeboInterface.py"/>
+
   <node 
     name="controller_spawner" 
     pkg="controller_manager" 
@@ -42,12 +47,12 @@
     output="screen" 
     ns="/WheelLeg" 
     args="
-      RB_position_controller
-      RF_position_controller
-      LB_position_controller
-      LF_position_controller
-      LM_position_controller
-      RM_position_controller
+      RB_velocity_controller
+      RF_velocity_controller
+      LB_velocity_controller
+      LF_velocity_controller
+      LM_velocity_controller
+      RM_velocity_controller
       RBRA_position_controller 
       RFRA_position_controller 
       LBRA_position_controller 
@@ -61,5 +66,20 @@
       LMRB_position_controller
       RMRB_position_controller
       joint_state_controller"/>
+
+    <node 
+      name="controller_spawner_stopped" 
+      pkg="controller_manager" 
+      type="spawner" 
+      respawn="false" 
+      ns="/WheelLeg"
+      args="--stopped 
+      RB_position_controller
+      RF_position_controller
+      LB_position_controller
+      LF_position_controller
+      LM_position_controller
+      RM_position_controller"/>
+
 
 </launch>

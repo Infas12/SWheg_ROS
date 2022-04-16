@@ -12,10 +12,10 @@
 
     <physics type="ode">
       <ode>
-        <solver>
+        <!-- <solver>
           <type>quick</type>
-          <iters>200</iters>
-        </solver>
+          <iters>50</iters>
+        </solver> -->
         
         <constraints>
         </constraints>
