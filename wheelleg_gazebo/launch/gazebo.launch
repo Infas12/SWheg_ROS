@@ -39,6 +39,11 @@
     pkg  = "wheelleg_gazebo"
     type = "ChassisGazeboInterface.py"/>
 
+  <node
+    name = "joystick"
+    pkg  = "joy"
+    type = "joy_node"/>
+
   <node 
     name="controller_spawner" 
     pkg="controller_manager" 

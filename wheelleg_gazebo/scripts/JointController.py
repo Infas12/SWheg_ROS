@@ -13,7 +13,6 @@ class JointControllerManager:
         for controller in self.controllerList:
             controller.SendCommand()
 
-
 @Singleton
 class TransformJointController:
     def __init__(self):
@@ -39,8 +38,6 @@ class TransformJointController:
         
         for pub in self.transformer_joint_publisher_list:
             pub.publish(self.joint_angle)
-
-
 
 class WheelJointController:
     
@@ -72,10 +69,10 @@ class WheelJointController:
             return
         else:
             self.mode = mode
-            
-        if mode == 0: # position tp velocity
+        
+        if mode == 0: # position to velocity
             self.switchServiceProxy([self.velocityController],[self.positionController],2,1,1)
-        else:         # position tp position
+        else:         # position to position
             self.switchServiceProxy([self.positionController],[self.velocityController],2,1,1)
             
     def SendCommand(self):
