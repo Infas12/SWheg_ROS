@@ -1,13 +1,11 @@
 #!/usr/bin/env python
-import imp
-from tokenize import single_quoted
 import rospy
 from std_msgs.msg import Float64
 from Singleton import Singleton
 from controller_manager_msgs.srv import SwitchController
 
 @Singleton
-class JointManager:
+class JointControllerManager:
     def __init__(self):
         self.controllerList = []
     
@@ -16,9 +14,8 @@ class JointManager:
             controller.SendCommand()
 
 
-
-class LegWheelController:
-    
+@Singleton
+class TransformJointController:
     def __init__(self):
         self.name_list = ["LFRA","LMRA","LBRA","RFRA","RMRA","RBRA",
                  "LFRB","LMRB","LBRB","RFRB","RMRB","RBRB"]
@@ -31,8 +28,7 @@ class LegWheelController:
         
         self.isLegged = False
         self.joint_angle = 0.0
-        JointManager.instance().controllerList.append(self)
-        
+        JointControllerManager.instance().controllerList.append(self)
         
     def SendCommand(self):
         
@@ -41,10 +37,11 @@ class LegWheelController:
         else :
             self.joint_angle = -0.0
         
-        # send transformer joint command
         for pub in self.transformer_joint_publisher_list:
             pub.publish(self.joint_angle)
-            
+
+
+
 class WheelJointController:
     
     def __init__(self,name,mode = 0):
@@ -67,7 +64,7 @@ class WheelJointController:
         self.switchServiceProxy = rospy.ServiceProxy(
             '/WheelLeg/controller_manager/switch_controller', SwitchController)
         
-        JointManager.instance().controllerList.append(self)
+        JointControllerManager.instance().controllerList.append(self)
     
     def setMode(self,mode):
         

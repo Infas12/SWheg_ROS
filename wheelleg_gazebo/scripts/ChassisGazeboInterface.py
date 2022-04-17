@@ -1,10 +1,13 @@
 #!/usr/bin/env python
+import imp
 from operator import mod
 import rospy
 from sensor_msgs.msg import Joy
-from legWheelController import LegWheelController , WheelJointController, JointManager
+from JointController import TransformJointController , WheelJointController, JointControllerManager
 from std_msgs.msg import Float64
 from controller_manager_msgs.srv import SwitchController
+from wheelleg_control.msg import JointState
+
 
 def JoystickCallback(data):
     
@@ -22,7 +25,7 @@ if __name__ == '__main__':
 
     rospy.init_node('chassisController', anonymous=True)
     r = rospy.Rate(100)
-    legWheelController = LegWheelController()
+    legWheelController = TransformJointController.instance()
     
     #wait for switch controller
     rospy.wait_for_service('/WheelLeg/controller_manager/switch_controller')
@@ -79,7 +82,7 @@ if __name__ == '__main__':
             joint.speedSet = Vy - Vw
         
 
-        JointManager.instance().SendCommand()
+        JointControllerManager.instance().SendCommand()
         
         
         r.sleep()
