@@ -1,23 +1,13 @@
 #!/usr/bin/env python
-import imp
-from operator import mod
 import rospy
-from sensor_msgs.msg import Joy
 from JointController import TransformJointController , WheelJointController, JointControllerManager
-from std_msgs.msg import Float64
 from controller_manager_msgs.srv import SwitchController
 from wheelleg_control.msg import JointState
 
 
-def JoystickCallback(data):
-    
-    if(data.buttons[1]==1 and 
-       (JoystickCallback.prevdata is None or JoystickCallback.prevdata.buttons[1]!=1)
-       ):
-        JoystickCallback.isLegged = not JoystickCallback.isLegged
-        
-    JoystickCallback.prevdata = data
-
+def jointCommandCallback(msg):
+    jointCommandCallback.msg = msg
+    print(msg)
 
 
 if __name__ == '__main__':    
@@ -25,65 +15,34 @@ if __name__ == '__main__':
 
     rospy.init_node('chassisController', anonymous=True)
     r = rospy.Rate(100)
-    legWheelController = TransformJointController.instance()
+    
     
     #wait for switch controller
     rospy.wait_for_service('/WheelLeg/controller_manager/switch_controller')
     switchServiceProxy = rospy.ServiceProxy('/WheelLeg/controller_manager/switch_controller', SwitchController)
     
-    #test stuff
     #initialize callback
-    JoystickCallback.isLegged = False
-    JoystickCallback.prevdata = None
-    joySub = rospy.Subscriber('joy',Joy,JoystickCallback)
+    jointCommandCallback.msg = None
+    commandSub = rospy.Subscriber('/WheelLeg/command',JointState,jointCommandCallback)
 
 
-    Vy = 0.0
-    Vw = 0.0
-
-    left = ["LF","LM","LB"]
-    right = ["RF","RM","RB"]
-    global left_joint, right_joint
-    left_joint  = []
-    right_joint = []
-    for name in left:
-        left_joint.append(
-            WheelJointController(name=name,mode=0)
-        )        
-    for name in right:
-        right_joint.append(
-            WheelJointController(name=name,mode=0)
-        )       
-    
+    #Initialize Joint controller
+    jointNameList = ["LF","LM","LB","RF","RM","RB"]
+    jointControllerList = []
+    for name in jointNameList:
+        jointControllerList.append(WheelJointController(name=name,mode=0))
+    legWheelController = TransformJointController.instance()
     
     while not rospy.is_shutdown():
-        
-        # update joystick readings
-        if(JoystickCallback.prevdata is not None):
-            legWheelController.isLegged = JoystickCallback.isLegged
-            Vy = 25.0 * JoystickCallback.prevdata.axes[0]
-            Vw = -25.0 * JoystickCallback.prevdata.axes[1]
 
-        if JoystickCallback.isLegged:
-            for joint in left_joint:
-                joint.setMode(1)
-            for joint in right_joint:
-                joint.setMode(1)
-        else:
-            for joint in left_joint:
-                joint.setMode(0)
-            for joint in right_joint:
-                joint.setMode(0)            
-
-        # control joints
-        for joint in left_joint:
-            joint.speedSet = Vy + Vw
-        for joint in right_joint:
-            joint.speedSet = Vy - Vw
+        if jointCommandCallback.msg is not None:
+            # update joystick readings
+            for i in range(len(jointNameList)):
+                jointControllerList[i].mode = jointCommandCallback.msg.JointMode[i]
+                if jointControllerList[i].mode == 0: # vel
+                    jointControllerList[i].speedSet = jointCommandCallback.msg.JointData[i]
         
 
         JointControllerManager.instance().SendCommand()
-        
-        
         r.sleep()
         
