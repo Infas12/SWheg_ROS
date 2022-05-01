@@ -27,7 +27,7 @@ if __name__ == '__main__':
     #initialize joint callback
 
     #Initialize Joint controllers
-    wheelJointNameList = ["LF","LM","LB","RF","RM","RB"]
+    wheelJointNameList = ["LF","LM","LB","RB","RM","RF"] #order matters!
     wheelJointControllerList = []
     for name in wheelJointNameList:
         wheelJointControllerList.append(WheelJointController(name=name,mode=0))
@@ -40,16 +40,13 @@ if __name__ == '__main__':
             # update wheel joints
             for i in range(len(wheelJointNameList)):
                 wheelJointControllerList[i].setMode(jointCommandCallback.msg.JointMode[i])
-                installation_coef = -1
-                if i < 3: # Right sided joints have a reversed installation direction
-                    installation_coef = 1
                 if wheelJointControllerList[i].mode == 0: # vel
-                    wheelJointControllerList[i].speedSet = jointCommandCallback.msg.JointData[i] * installation_coef
+                    wheelJointControllerList[i].speedSet = jointCommandCallback.msg.JointData[i]
                 elif wheelJointControllerList[i].mode == 1: # pos
-                    wheelJointControllerList[i].pisitionSet = jointCommandCallback.msg.JointData[i] * installation_coef
-
+                    wheelJointControllerList[i].pisitionSet = jointCommandCallback.msg.JointData[i]
+            
             # update transform joint
-            if jointCommandCallback.msg.TransformLength > 1.0:  #For now we only have two states
+            if jointCommandCallback.msg.TransformLength > 1.0:  #For now this is only a fake controller: we only have two states(open and close)
                 legWheelController.isLegged = True
             else:
                 legWheelController.isLegged = False
