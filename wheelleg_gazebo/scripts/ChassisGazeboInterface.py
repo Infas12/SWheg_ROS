@@ -43,7 +43,7 @@ if __name__ == '__main__':
                 if wheelJointControllerList[i].mode == 0: # vel
                     wheelJointControllerList[i].speedSet = jointCommandCallback.msg.JointData[i]
                 elif wheelJointControllerList[i].mode == 1: # pos
-                    wheelJointControllerList[i].pisitionSet = jointCommandCallback.msg.JointData[i]
+                    wheelJointControllerList[i].positionSet = jointCommandCallback.msg.JointData[i]
             
             # update transform joint
             if jointCommandCallback.msg.TransformLength > 1.0:  #For now this is only a fake controller: we only have two states(open and close)

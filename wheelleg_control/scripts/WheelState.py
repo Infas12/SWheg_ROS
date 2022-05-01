@@ -16,6 +16,11 @@ class WheelState(RobotState):
     def execute(self, userdata):
         r = rospy.Rate(100)
         
+        # clean-up all data
+        self.stateChangeFlag = False #gonna fix this.
+        self.Vy = 0.0
+        self.Vw = 0.0
+
         while(not self.stateChangeFlag):
 
             if self.joyData is not None:
@@ -34,5 +39,4 @@ class WheelState(RobotState):
             r.sleep()
         
         return "Transform"
-        
     

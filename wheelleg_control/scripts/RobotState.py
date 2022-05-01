@@ -36,7 +36,7 @@ class RobotState(smach.State):
         msg = JointData()
         msg.TransformLength = self.transformLength            
         for motorName in self.motorNameList:
-            motor = MotorManager.instance().getMotor(motorName) #get motor from motormanager
+            motor = MotorManager.instance().getMotor(motorName) # get motor from motormanager
             msg.JointMode.append(int(self.motorControlMode))
             if self.motorControlMode == ContorlMode.SPD_MODE:
                 msg.JointData.append(motor.speedSet)
