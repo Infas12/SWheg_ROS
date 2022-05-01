@@ -22,18 +22,15 @@ class MotorManager:
     def getMotor(self,motorName):
         return self.motorDict[motorName]
 
-
 class Motor:
     
     def __init__(self,name):
-        
         self.speedSet = 0.0
         self.positionSet = 0.0
         self.speedFdb = 0.0
         self.positionFdb = 0.0
         self.name = name
-
-        MotorManager.instance().controllerDict[name] = self
+        MotorManager.instance().motorDict[name] = self
     
         
         
