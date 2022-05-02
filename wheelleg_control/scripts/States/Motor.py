@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import rospy
 from std_msgs.msg import Float64
-from Singleton import Singleton
+from States.Singleton import Singleton
 from controller_manager_msgs.srv import SwitchController
 from sensor_msgs.msg import JointState
 

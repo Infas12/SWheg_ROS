@@ -2,9 +2,9 @@
 import imp
 import rospy
 import smach
-from WheelState import WheelState
-from LegState import LegState
-from TransitionState import TransitionState
+from States.WheelState import WheelState
+from States.LegState import LegState
+from States.TransitionState import TransitionState
 
 if __name__ == '__main__':
     rospy.init_node("StateMachine")

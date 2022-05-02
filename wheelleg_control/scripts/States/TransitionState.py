@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import rospy
-from Motor import MotorManager
+from States.Motor import MotorManager
 from RobotState import RobotState, ContorlMode
 
 

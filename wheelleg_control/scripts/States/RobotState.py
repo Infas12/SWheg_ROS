@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 import rospy
 import smach
-from Singleton import Singleton
-from Motor import Motor, MotorManager
+from States.Motor import Motor, MotorManager
 from wheelleg_control.msg import JointData
 from sensor_msgs.msg import Joy
 
