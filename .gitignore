@@ -2,3 +2,4 @@
 *.pyc
 */__pycache__
 */.vscode
+*/scripts/__pycache__
