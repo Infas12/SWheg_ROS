@@ -5,20 +5,20 @@ import numpy as np
 import sys
 import RPi.GPIO as GPIO
 
-state = "nothing"
+state = "stop"
 
 
 def JoystickCallback(data):
     global state
-
-    if(data.axes[7]==1): #Cross key up/down
-        state = "forward"
-    elif data.axes[7]==-1: #Cross key up/down
-        state = "backward"
-    elif data.buttons[6]==1: #back
-        state = "stop"
+    if(data.buttons[4]==1): #LB
+        if(data.buttons[0]==1): #A
+            state = "forward"
+        elif data.buttons[1]==1: #B
+            state = "backward"
+        else:
+            state = "stop"
     else:
-        state = "nothing"
+        state = "stop"
     # rospy.logwarn(" %d %d %d" ,data.axes[7], data.axes[7] ,data.buttons[6])
 
 def linear_control():
@@ -28,6 +28,7 @@ def linear_control():
     rospy.init_node('linear_controller', anonymous=True)
     rate = rospy.Rate(50) 
 
+    #TODO: modify chan_list for using 12 linear actuators
     chan_list = [35,36,37,38]
     GPIO.setmode(GPIO.BOARD)
     GPIO.setwarnings(False)
@@ -47,9 +48,6 @@ def linear_control():
         elif state == "stop":
             GPIO.output(chan_list, (1,1,0,0))
             rospy.logwarn(" stop" )
-        elif state == "nothing":
-            GPIO.output(chan_list, (0,0,0,0))
-            rospy.logwarn(" nothing" )
         rate.sleep()
 
     GPIO.cleanup()

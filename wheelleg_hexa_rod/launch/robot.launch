@@ -1,0 +1,5 @@
+<launch>
+    <node pkg="joy" type="joy_node" name="joy_node" ></node>
+    <node pkg="wheelleg_hexa_rod" type="chassisController" name="chassisController" ></node>
+    <node pkg="wheelleg_hexa_rod" type="motorController" name="motorController" ></node>
+</launch>
