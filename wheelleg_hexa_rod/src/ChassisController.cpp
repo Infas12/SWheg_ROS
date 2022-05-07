@@ -57,12 +57,12 @@ int main(int argc, char **argv)
     {   
         //FIXME: modify difference model
         if(robot_state == WHEEL_STATE){
-            msgJoint.JointData[0] = -(Vx + Vy);
-            msgJoint.JointData[1] = -(Vx + Vy);
-            msgJoint.JointData[2] = -(Vx + Vy);
-            msgJoint.JointData[3] = Vx - Vy;
-            msgJoint.JointData[4] = Vx - Vy;
-            msgJoint.JointData[5] = Vx - Vy;
+            msgJoint.JointData[0] = Vx - Vy;
+            msgJoint.JointData[1] = Vx - Vy;
+            msgJoint.JointData[2] = Vx - Vy;
+            msgJoint.JointData[3] = -(Vx + Vy);
+            msgJoint.JointData[4] = -(Vx + Vy);
+            msgJoint.JointData[5] = -(Vx + Vy);
         }else if(robot_state == LEG_STATE){
             for(int i = 0; i < MOTOR_NUM; i++){
                 msgJoint.JointData[i] += 0.1*legVx*leg_forward[i];

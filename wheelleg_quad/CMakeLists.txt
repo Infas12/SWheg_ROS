@@ -32,10 +32,6 @@ scripts/test0223.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
-catkin_install_python(PROGRAMS scripts/linearController.py
-  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-)
-
 add_compile_options(-lpthread)
 
 include_directories(${catkin_INCLUDE_DIRS} src/socketCan2/inc)
@@ -48,8 +44,8 @@ set(SRCS
     src/socketCan2/src/M3508.cpp
     )
 
-add_executable(chassisController ${SRCS} src/ChassisController.cpp )
-target_link_libraries(chassisController ${catkin_LIBRARIES} pthread)
+add_executable(chassisController_quad ${SRCS} src/ChassisController.cpp )
+target_link_libraries(chassisController_quad ${catkin_LIBRARIES} pthread)
 
-add_executable(motorController ${SRCS} src/MotorController.cpp )
-target_link_libraries(motorController ${catkin_LIBRARIES} pthread)
+add_executable(motorController_quad ${SRCS} src/MotorController.cpp )
+target_link_libraries(motorController_quad ${catkin_LIBRARIES} pthread)

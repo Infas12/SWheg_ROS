@@ -12,9 +12,9 @@ def JoystickCallback(data):
     global state
     if(data.buttons[4]==1): #LB
         if(data.buttons[0]==1): #A
-            state = "forward"
+            state = "wheel"
         elif data.buttons[1]==1: #B
-            state = "backward"
+            state = "leg"
         else:
             state = "stop"
     else:
@@ -27,27 +27,20 @@ def linear_control():
     sub = rospy.Subscriber('joy',Joy,JoystickCallback)
     rospy.init_node('linear_controller', anonymous=True)
     rate = rospy.Rate(50) 
-
-    #TODO: modify chan_list for using 12 linear actuators
-    chan_list = [35,36,37,38]
+    
     GPIO.setmode(GPIO.BOARD)
     GPIO.setwarnings(False)
     # 为输出的引脚设置默认值
-    GPIO.setup(35, GPIO.OUT, initial=GPIO.LOW)
-    GPIO.setup(36, GPIO.OUT, initial=GPIO.LOW)
-    GPIO.setup(37, GPIO.OUT, initial=GPIO.LOW)
-    GPIO.setup(38, GPIO.OUT, initial=GPIO.LOW)
+    chan_list = [35,36,37,38]
+    GPIO.setup(chan_list, GPIO.OUT, initial=0)
 
     while not rospy.is_shutdown():
-        if state == "forward":
+        if state == "wheel":
             GPIO.output(chan_list, (1,0,0,1))   
-            rospy.logwarn(" forward" )
-        elif state == "backward" :
+        elif state == "leg" :
             GPIO.output(chan_list, (0,1,1,0))
-            rospy.logwarn(" backward" )
         elif state == "stop":
             GPIO.output(chan_list, (1,1,0,0))
-            rospy.logwarn(" stop" )
         rate.sleep()
 
     GPIO.cleanup()
