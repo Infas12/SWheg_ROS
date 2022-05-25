@@ -2,7 +2,7 @@
 import rospy
 import smach
 from States.Motor import Motor, MotorManager
-from wheelleg_control.msg import JointData
+from wheelleg_control.msg import WheelLegControlMsg
 from sensor_msgs.msg import Joy
 
 class ContorlMode:
@@ -23,7 +23,7 @@ class RobotState(smach.State):
         self.motorControlMode = ContorlMode.SPD_MODE
         self.IsLeggedMode = False
         
-        self.jointPub = rospy.Publisher('/WheelLeg/command',JointData,queue_size=10)
+        self.jointPub = rospy.Publisher('/WheelLeg/command',WheelLegControlMsg,queue_size=10)
         self.joySub   = rospy.Subscriber('joy',Joy,self.JoystickCallback)
         self.joyData  = None
         
@@ -34,7 +34,7 @@ class RobotState(smach.State):
 
 
     def sendData(self): # send joint commands
-        msg = JointData()
+        msg = WheelLegControlMsg()
         msg.IsLeggedMode = self.IsLeggedMode            
         for motorName in self.motorNameList:
             motor = MotorManager.instance().getMotor(motorName) # get motor from motormanager

@@ -2,7 +2,7 @@
 import rospy
 from JointController import TransformJointController , WheelJointController, JointControllerManager
 from controller_manager_msgs.srv import SwitchController
-from wheelleg_control.msg import JointData
+from wheelleg_control.msg import WheelLegControlMsg
 
 
 def jointCommandCallback(msg):
@@ -22,7 +22,7 @@ if __name__ == '__main__':
     
     #initialize command callback
     jointCommandCallback.msg = None
-    commandSub = rospy.Subscriber('/WheelLeg/command',JointData,jointCommandCallback)
+    commandSub = rospy.Subscriber('/WheelLeg/command',WheelLegControlMsg,jointCommandCallback)
     
     #Initialize gazebo Joint controllers; this should be in line with the defination provided in WheelLeg_control.yaml
     wheelJointNameList = ["LF_Joint","LM_Joint","LB_Joint","RB_Joint","RM_Joint","RF_Joint"]
