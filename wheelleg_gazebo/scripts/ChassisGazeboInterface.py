@@ -24,11 +24,13 @@ if __name__ == '__main__':
     jointCommandCallback.msg = None
     commandSub = rospy.Subscriber('/WheelLeg/command',JointData,jointCommandCallback)
     
-    #Initialize gazebo Joint controllers
-    wheelJointNameList = ["LF_Joint","LM_Joint","LB_Joint","RB_Joint","RM_Joint","RF_Joint"] # order matters!
-    wheelJointControllerList = []
+    #Initialize gazebo Joint controllers; this should be in line with the defination provided in WheelLeg_control.yaml
+    wheelJointNameList = ["LF_Joint","LM_Joint","LB_Joint","RB_Joint","RM_Joint","RF_Joint"]
+    wheelJointControllerDict = {}
     for name in wheelJointNameList:
-        wheelJointControllerList.append(WheelJointController(name=name,mode=0))
+        wheelJointControllerDict[name] = WheelJointController(name=name,mode=0)
+        
+    #Initialize Transform Controller
     legWheelController = TransformJointController.instance()
     
     
@@ -36,13 +38,20 @@ if __name__ == '__main__':
 
         if jointCommandCallback.msg is not None:
             
-            # update wheel joints
-            for i in range(len(wheelJointNameList)):
-                wheelJointControllerList[i].setMode(jointCommandCallback.msg.JointMode[i])
-                if wheelJointControllerList[i].mode == 0: # vel
-                    wheelJointControllerList[i].speedSet = jointCommandCallback.msg.JointData[i]
-                elif wheelJointControllerList[i].mode == 1: # pos
-                    wheelJointControllerList[i].positionSet = jointCommandCallback.msg.JointData[i]
+            for i in range(len(jointCommandCallback.msg.JointName)):
+                
+                # get corresponding joint
+                jointname = jointCommandCallback.msg.JointName[i]
+                joint = wheelJointControllerDict[jointname]
+                
+                # set joint mode
+                joint.setMode(jointCommandCallback.msg.JointMode[i])
+                
+                # set joint command
+                if joint.mode == 0: #vel
+                    joint.speedSet = jointCommandCallback.msg.JointData[i]
+                else: #pos
+                    joint.positionSet = jointCommandCallback.msg.JointData[i]
             
             # update transform joint
             legWheelController.isLegged = jointCommandCallback.msg.IsLeggedMode 

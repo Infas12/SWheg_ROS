@@ -15,9 +15,11 @@ class RobotState(smach.State):
         
         smach.State.__init__(self, outcomes=outcomes)
         
-        self.motorNameList = ["LF_Joint","LM_Joint","LB_Joint","RB_Joint","RM_Joint","RF_Joint"]
+        self.motorNameList = ["RM_Joint","RF_Joint","LF_Joint","LM_Joint","LB_Joint","RB_Joint"]
+        
         for name in self.motorNameList:
             Motor(name)
+        
         self.motorControlMode = ContorlMode.SPD_MODE
         self.IsLeggedMode = False
         
@@ -36,6 +38,7 @@ class RobotState(smach.State):
         msg.IsLeggedMode = self.IsLeggedMode            
         for motorName in self.motorNameList:
             motor = MotorManager.instance().getMotor(motorName) # get motor from motormanager
+            msg.JointName.append(motorName)
             msg.JointMode.append(int(self.motorControlMode))
             if self.motorControlMode == ContorlMode.SPD_MODE:
                 msg.JointData.append(motor.speedSet)
