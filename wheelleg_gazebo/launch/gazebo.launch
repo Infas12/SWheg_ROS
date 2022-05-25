@@ -52,24 +52,24 @@
     output="screen" 
     ns="/WheelLeg" 
     args="
-      RB_velocity_controller
-      RF_velocity_controller
-      LB_velocity_controller
-      LF_velocity_controller
-      LM_velocity_controller
-      RM_velocity_controller
-      RBRA_position_controller 
-      RFRA_position_controller 
-      LBRA_position_controller 
-      LFRA_position_controller
-      LMRA_position_controller
-      RMRA_position_controller
-      RBRB_position_controller 
-      RFRB_position_controller 
-      LBRB_position_controller 
-      LFRB_position_controller
-      LMRB_position_controller
-      RMRB_position_controller
+      RB_Joint_velocity_controller
+      RF_Joint_velocity_controller
+      LB_Joint_velocity_controller
+      LF_Joint_velocity_controller
+      LM_Joint_velocity_controller
+      RM_Joint_velocity_controller
+      RBRA_Joint_position_controller 
+      RFRA_Joint_position_controller 
+      LBRA_Joint_position_controller 
+      LFRA_Joint_position_controller
+      LMRA_Joint_position_controller
+      RMRA_Joint_position_controller
+      RBRB_Joint_position_controller 
+      RFRB_Joint_position_controller 
+      LBRB_Joint_position_controller 
+      LFRB_Joint_position_controller
+      LMRB_Joint_position_controller
+      RMRB_Joint_position_controller
       joint_state_controller"/>
 
     <node 
@@ -79,12 +79,12 @@
       respawn="false" 
       ns="/WheelLeg"
       args="--stopped 
-      RB_position_controller
-      RF_position_controller
-      LB_position_controller
-      LF_position_controller
-      LM_position_controller
-      RM_position_controller"/>
+      RB_Joint_position_controller
+      RF_Joint_position_controller
+      LB_Joint_position_controller
+      LF_Joint_position_controller
+      LM_Joint_position_controller
+      RM_Joint_position_controller"/>
 
 
 </launch>

@@ -22,7 +22,7 @@ class TransformJointController:
         
         for name in self.name_list:
             self.transformer_joint_publisher_list.append(
-                rospy.Publisher('/WheelLeg/' + name +'_position_controller/command',Float64,queue_size=10)
+                rospy.Publisher('/WheelLeg/' + name +'_Joint_position_controller/command',Float64,queue_size=10)
             )
         
         self.isLegged = False

@@ -25,7 +25,7 @@ if __name__ == '__main__':
     commandSub = rospy.Subscriber('/WheelLeg/command',JointData,jointCommandCallback)
     
     #Initialize gazebo Joint controllers
-    wheelJointNameList = ["LF","LM","LB","RB","RM","RF"] # order matters!
+    wheelJointNameList = ["LF_Joint","LM_Joint","LB_Joint","RB_Joint","RM_Joint","RF_Joint"] # order matters!
     wheelJointControllerList = []
     for name in wheelJointNameList:
         wheelJointControllerList.append(WheelJointController(name=name,mode=0))
