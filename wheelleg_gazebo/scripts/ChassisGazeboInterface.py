@@ -24,10 +24,8 @@ if __name__ == '__main__':
     jointCommandCallback.msg = None
     commandSub = rospy.Subscriber('/WheelLeg/command',JointData,jointCommandCallback)
     
-    #initialize joint callback
-
-    #Initialize Joint controllers
-    wheelJointNameList = ["LF","LM","LB","RB","RM","RF"] #order matters!
+    #Initialize gazebo Joint controllers
+    wheelJointNameList = ["LF","LM","LB","RB","RM","RF"] # order matters!
     wheelJointControllerList = []
     for name in wheelJointNameList:
         wheelJointControllerList.append(WheelJointController(name=name,mode=0))
@@ -37,6 +35,7 @@ if __name__ == '__main__':
     while not rospy.is_shutdown():
 
         if jointCommandCallback.msg is not None:
+            
             # update wheel joints
             for i in range(len(wheelJointNameList)):
                 wheelJointControllerList[i].setMode(jointCommandCallback.msg.JointMode[i])
@@ -46,12 +45,10 @@ if __name__ == '__main__':
                     wheelJointControllerList[i].positionSet = jointCommandCallback.msg.JointData[i]
             
             # update transform joint
-            if jointCommandCallback.msg.TransformLength > 1.0:  #For now this is only a fake controller: we only have two states(open and close)
-                legWheelController.isLegged = True
-            else:
-                legWheelController.isLegged = False
+            legWheelController.isLegged = jointCommandCallback.msg.IsLeggedMode 
             
-
+        # send command to all gazebo controllers
         JointControllerManager.instance().SendCommand()
+        
         r.sleep()
         

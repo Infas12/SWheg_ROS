@@ -19,7 +19,7 @@ class RobotState(smach.State):
         for name in self.motorNameList:
             Motor(name)
         self.motorControlMode = ContorlMode.SPD_MODE
-        self.transformLength = 0.0
+        self.IsLeggedMode = False
         
         self.jointPub = rospy.Publisher('/WheelLeg/command',JointData,queue_size=10)
         self.joySub   = rospy.Subscriber('joy',Joy,self.JoystickCallback)
@@ -31,9 +31,9 @@ class RobotState(smach.State):
         ROS_INFO("'execute' method must be overridden")
 
 
-    def sendData(self):
+    def sendData(self): # send joint commands
         msg = JointData()
-        msg.TransformLength = self.transformLength            
+        msg.IsLeggedMode = self.IsLeggedMode            
         for motorName in self.motorNameList:
             motor = MotorManager.instance().getMotor(motorName) # get motor from motormanager
             msg.JointMode.append(int(self.motorControlMode))
@@ -45,7 +45,7 @@ class RobotState(smach.State):
     
     def JoystickCallback(self,data):
         if(data.buttons[1]==1 and 
-        (self.joyData is None or self.joyData.buttons[1]!=1)
-        ): # Change state when B is pressed
-            self.stateChangeFlag = True
-        self.joyData = data
+        (self.joyData is None or self.joyData.buttons[1]!=1) # compare current joystick data with previous data
+        ): 
+            self.stateChangeFlag = True # Change state when B is pressed
+        self.joyData = data # collect joystick data

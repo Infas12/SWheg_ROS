@@ -9,9 +9,10 @@ class WheelState(RobotState):
     def __init__(self):
         RobotState.__init__(self, outcomes=["Transform"])
         self.motorControlMode = ContorlMode.SPD_MODE
+        self.IsLeggedMode = False #wheel mode
         self.Vy = 0.0
         self.Vw = 0.0
-        self.transformLength = 0.0
+        
         
     def execute(self, userdata):
         r = rospy.Rate(100)
@@ -20,6 +21,8 @@ class WheelState(RobotState):
         self.stateChangeFlag = False #gonna fix this.
         self.Vy = 0.0
         self.Vw = 0.0
+        
+        print(self.Vy)
 
         while(not self.stateChangeFlag):
 

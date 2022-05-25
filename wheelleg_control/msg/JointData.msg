@@ -1,3 +1,3 @@
-float32    TransformLength
+bool       IsLeggedMode
 bool[]     JointMode
 float32[]  JointData

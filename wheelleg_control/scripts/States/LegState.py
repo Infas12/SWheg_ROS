@@ -10,12 +10,10 @@ class LegState(RobotState):
     def __init__(self):
         RobotState.__init__(self, outcomes=["Transform"])
         self.motorControlMode = ContorlMode.POS_MODE
-        self.transformLength = 10.0
+        self.IsLeggedMode = True 
         self.tick = 0
-        self.period = 2000
+        self.period = 2000 # gait cycle
     
-    
-        
     def execute(self, userdata):
         
         self.stateChangeFlag = False
@@ -38,9 +36,11 @@ class LegState(RobotState):
             r.sleep()
         
         return "Transform"
-        
+    
+    
     def getPosTrot(self,timestamp,period):
-  
+        # this thing is written like shit
+        
         PI = 3.1415926
         leaveGroundAngleThres = - PI/2.5
         leaveGrooundTimeThres = 0.8

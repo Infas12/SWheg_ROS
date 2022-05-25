@@ -12,14 +12,14 @@ class MotorManager:
         self.motorDict = {}
         self.jointFdbSub = rospy.Subscriber('/WheelLeg/joint_states',JointState,self.JointStateCallback)
     
-    def JointStateCallback(self,data):
+    def JointStateCallback(self,data): # collect and distribute all motor feedback
         posFdbDict = dict(zip(data.name,data.position))
         spdFdbDict = dict(zip(data.name,data.velocity))
-        for controller_name in self.motorDict.keys():
+        for controller_name in self.motorDict.keys(): # set motor feedback
             self.motorDict[controller_name].speedFdb    = spdFdbDict[controller_name]
             self.motorDict[controller_name].positionFdb = posFdbDict[controller_name]
     
-    def getMotor(self,motorName):
+    def getMotor(self,motorName): #get motor instance
         return self.motorDict[motorName]
 
 class Motor:
@@ -30,7 +30,7 @@ class Motor:
         self.speedFdb = 0.0
         self.positionFdb = 0.0
         self.name = name
-        MotorManager.instance().motorDict[name] = self
+        MotorManager.instance().motorDict[name] = self #register motor at manager
     
         
         
