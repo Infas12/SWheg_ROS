@@ -17,12 +17,12 @@ if __name__ == '__main__':
     r = rospy.Rate(100)
     
     #wait for switch_controller
-    rospy.wait_for_service('/WheelLeg/controller_manager/switch_controller')
-    switchServiceProxy = rospy.ServiceProxy('/WheelLeg/controller_manager/switch_controller', SwitchController)
+    rospy.wait_for_service('/WheelLegHexapod/controller_manager/switch_controller')
+    switchServiceProxy = rospy.ServiceProxy('/WheelLegHexapod/controller_manager/switch_controller', SwitchController)
     
     #initialize command callback
     jointCommandCallback.msg = None
-    commandSub = rospy.Subscriber('/WheelLeg/command',WheelLegControlMsg,jointCommandCallback)
+    commandSub = rospy.Subscriber('/WheelLegHexapod/command',WheelLegControlMsg,jointCommandCallback)
     
     #Initialize gazebo Joint controllers; this should be in line with the defination provided in WheelLeg_control.yaml
     wheelJointNameList = ["LF_Joint","LM_Joint","LB_Joint","RB_Joint","RM_Joint","RF_Joint"]

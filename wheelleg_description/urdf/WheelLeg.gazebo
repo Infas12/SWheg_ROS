@@ -2,13 +2,6 @@
 
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-  <!--load control interface for robot-->
-  <gazebo>
-    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
-      <robotNamespace>/WheelLeg</robotNamespace>
-    </plugin>
-  </gazebo>
-
   <!--add transmission to joints-->
   <xacro:macro name="rimJointConfig" params="name">
     
@@ -25,8 +18,7 @@
     
     <gazebo reference="${name}">
       <material>Gazebo/Black</material>
-    
-    </gazebo>    
+    </gazebo> 
   </xacro:macro>
 
   <xacro:macro name="wheelLegJointConfig" params="name">
@@ -49,13 +41,5 @@
     <xacro:rimJointConfig name="${name}RA"/>
     <xacro:rimJointConfig name="${name}RB"/>  
   </xacro:macro>
-
-  <xacro:wheelLegJointConfig name="LF" />
-  <xacro:wheelLegJointConfig name="LM" />
-  <xacro:wheelLegJointConfig name="LB" />
-
-  <xacro:wheelLegJointConfig name="RF" />
-  <xacro:wheelLegJointConfig name="RM" />
-  <xacro:wheelLegJointConfig name="RB" />
 
 </robot>

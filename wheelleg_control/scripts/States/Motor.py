@@ -10,7 +10,7 @@ class MotorManager:
     
     def __init__(self):
         self.motorDict = {}
-        self.jointFdbSub = rospy.Subscriber('/WheelLeg/joint_states',JointState,self.JointStateCallback)
+        self.jointFdbSub = rospy.Subscriber('/WheelLegHexapod/joint_states',JointState,self.JointStateCallback)
     
     def JointStateCallback(self,data): # collect and distribute all motor feedback
         posFdbDict = dict(zip(data.name,data.position))

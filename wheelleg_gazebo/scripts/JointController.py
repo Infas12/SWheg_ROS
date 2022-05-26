@@ -22,7 +22,7 @@ class TransformJointController:
         
         for name in self.name_list:
             self.transformer_joint_publisher_list.append(
-                rospy.Publisher('/WheelLeg/' + name +'_Joint_position_controller/command',Float64,queue_size=10)
+                rospy.Publisher('/WheelLegHexapod/' + name +'_Joint_position_controller/command',Float64,queue_size=10)
             )
         
         self.isLegged = False
@@ -51,15 +51,15 @@ class WheelJointController:
         self.mode = mode #0 - speed mode 1 - vel mode
         
         self.speedCmdPub = rospy.Publisher(
-            '/WheelLeg/' + self.velocityController +'/command',
+            '/WheelLegHexapod/' + self.velocityController +'/command',
             Float64,queue_size=10)
         
         self.positionCmdPub = rospy.Publisher(
-            '/WheelLeg/' + self.positionController +'/command',
+            '/WheelLegHexapod/' + self.positionController +'/command',
             Float64,queue_size=10)
         
         self.switchServiceProxy = rospy.ServiceProxy(
-            '/WheelLeg/controller_manager/switch_controller', SwitchController)
+            '/WheelLegHexapod/controller_manager/switch_controller', SwitchController)
         
         JointControllerManager.instance().controllerList.append(self)
     

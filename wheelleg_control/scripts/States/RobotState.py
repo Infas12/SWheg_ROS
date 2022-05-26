@@ -23,7 +23,7 @@ class RobotState(smach.State):
         self.motorControlMode = ContorlMode.SPD_MODE
         self.IsLeggedMode = False
         
-        self.jointPub = rospy.Publisher('/WheelLeg/command',WheelLegControlMsg,queue_size=10)
+        self.jointPub = rospy.Publisher('/WheelLegHexapod/command',WheelLegControlMsg,queue_size=10)
         self.joySub   = rospy.Subscriber('joy',Joy,self.JoystickCallback)
         self.joyData  = None
         

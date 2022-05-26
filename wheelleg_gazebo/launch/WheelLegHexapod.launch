@@ -15,7 +15,7 @@
   
   <param 
     name="robot_description" 
-    command="$(find xacro)/xacro $(find wheelleg_description)/urdf/WheelLeg.xacro" />
+    command="$(find xacro)/xacro $(find wheelleg_description)/urdf/Hexapod.xacro" />
 
   <node
     name="spawn_model"
@@ -31,7 +31,7 @@
     args="pub /calibrated std_msgs/Bool true" />
 
   <rosparam 
-    file="$(find wheelleg_gazebo)/config/WheelLeg_control.yaml" 
+    file="$(find wheelleg_gazebo)/config/WheelLegHexapod_control.yaml" 
     command="load"/>
 
   <node
@@ -50,7 +50,7 @@
     type="spawner" 
     respawn="false"
     output="screen" 
-    ns="/WheelLeg" 
+    ns="/WheelLegHexapod" 
     args="
       RB_Joint_velocity_controller
       RF_Joint_velocity_controller
@@ -77,7 +77,7 @@
       pkg="controller_manager" 
       type="spawner" 
       respawn="false" 
-      ns="/WheelLeg"
+      ns="/WheelLegHexapod"
       args="--stopped 
       RB_Joint_position_controller
       RF_Joint_position_controller
