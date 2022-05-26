@@ -13,20 +13,32 @@ class JointControllerManager:
         for controller in self.controllerList:
             controller.SendCommand()
 
-@Singleton
 class TransformJointController:
-    def __init__(self):
-        self.name_list = ["LFRA","LMRA","LBRA","RFRA","RMRA","RBRA",
-                 "LFRB","LMRB","LBRB","RFRB","RMRB","RBRB"]
-        self.transformer_joint_publisher_list = []
+    def __init__(self,robotName):
         
-        for name in self.name_list:
+        # get wheel joints
+        wheelJointNameList = rospy.get_param('/' + robotName + '/joints')
+        
+        # get rim joint name
+        self.rim_joint_name_list = []
+        for joint in wheelJointNameList:
+            self.rim_joint_name_list.append(joint+"RA")
+            self.rim_joint_name_list.append(joint+"RB")
+        
+        # spawn rim joint controller publishers
+        self.transformer_joint_publisher_list = []
+        for name in self.rim_joint_name_list:
             self.transformer_joint_publisher_list.append(
-                rospy.Publisher('/WheelLegHexapod/' + name +'_Joint_position_controller/command',Float64,queue_size=10)
+                rospy.Publisher('/' + robotName + '/' + name +'_Joint_position_controller/command',
+                                Float64,
+                                queue_size=10)
             )
         
+        # set joint mode
         self.isLegged = False
         self.joint_angle = 0.0
+        
+        # register at joint controller manager
         JointControllerManager.instance().controllerList.append(self)
         
     def SendCommand(self):
@@ -41,7 +53,7 @@ class TransformJointController:
 
 class WheelJointController:
     
-    def __init__(self,name,mode = 0):
+    def __init__(self,name,robotName,mode = 0):
         
         self.positionController = name + '_position_controller'
         self.velocityController = name + '_velocity_controller'
@@ -51,15 +63,16 @@ class WheelJointController:
         self.mode = mode #0 - speed mode 1 - vel mode
         
         self.speedCmdPub = rospy.Publisher(
-            '/WheelLegHexapod/' + self.velocityController +'/command',
+            '/' + robotName + '/' + self.velocityController +'/command',
             Float64,queue_size=10)
         
         self.positionCmdPub = rospy.Publisher(
-            '/WheelLegHexapod/' + self.positionController +'/command',
+            '/' + robotName + '/' + self.positionController +'/command',
             Float64,queue_size=10)
         
         self.switchServiceProxy = rospy.ServiceProxy(
-            '/WheelLegHexapod/controller_manager/switch_controller', SwitchController)
+            '/' + robotName + '/controller_manager/switch_controller',
+            SwitchController)
         
         JointControllerManager.instance().controllerList.append(self)
     

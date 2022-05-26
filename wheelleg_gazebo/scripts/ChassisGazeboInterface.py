@@ -9,30 +9,30 @@ def jointCommandCallback(msg):
     jointCommandCallback.msg = msg
     print(msg)
 
-
 if __name__ == '__main__':    
-    
 
     rospy.init_node('chassisController', anonymous=True)
     r = rospy.Rate(100)
     
+    robotName = "WheelLegHexapod"
+    
     #wait for switch_controller
-    rospy.wait_for_service('/WheelLegHexapod/controller_manager/switch_controller')
-    switchServiceProxy = rospy.ServiceProxy('/WheelLegHexapod/controller_manager/switch_controller', SwitchController)
+    rospy.wait_for_service('/' + robotName + '/controller_manager/switch_controller')
+    switchServiceProxy = rospy.ServiceProxy('/' + robotName + '/controller_manager/switch_controller', SwitchController)
     
     #initialize command callback
     jointCommandCallback.msg = None
-    commandSub = rospy.Subscriber('/WheelLegHexapod/command',WheelLegControlMsg,jointCommandCallback)
+    commandSub = rospy.Subscriber('/' + robotName + '/command',WheelLegControlMsg,jointCommandCallback)
     
-    #Initialize gazebo Joint controllers; this should be in line with the defination provided in WheelLeg_control.yaml
-    wheelJointNameList = ["LF_Joint","LM_Joint","LB_Joint","RB_Joint","RM_Joint","RF_Joint"]
+    #Initialize gazebo Joint controllers
+    wheelJointNameList = rospy.get_param('/' + robotName + '/joints')
     wheelJointControllerDict = {}
     for name in wheelJointNameList:
-        wheelJointControllerDict[name] = WheelJointController(name=name,mode=0)
+        joint_name = name + "_Joint"
+        wheelJointControllerDict[joint_name] = WheelJointController(name=joint_name,robotName=robotName,mode=0)
         
     #Initialize Transform Controller
-    legWheelController = TransformJointController.instance()
-    
+    legWheelController = TransformJointController(robotName=robotName)
     
     while not rospy.is_shutdown():
 

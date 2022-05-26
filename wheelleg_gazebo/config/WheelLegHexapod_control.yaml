@@ -1,4 +1,7 @@
 WheelLegHexapod:
+  
+  joints: [RM,RB,RF,LM,LB,LF]
+  
   # Publish all joint states -----------------------------------
   joint_state_controller:
     type: joint_state_controller/JointStateController
@@ -68,7 +71,6 @@ WheelLegHexapod:
     pid:   {p: 100.0, i: 0.1, d: 1, i_clamp_min: -50.0, i_clamp_max: 50.0}
 
   ## fake joints
-
   LBRA_Joint_position_controller:
     type: velocity_controllers/JointPositionController
     joint: LBRA_Joint
