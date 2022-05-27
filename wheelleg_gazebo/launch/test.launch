@@ -1,0 +1,10 @@
+<launch>
+
+  <node
+    name   = "chassisGazeboInterface"
+    pkg    = "wheelleg_gazebo"
+    type   = "ChassisGazeboInterface.py"
+    args   = "-n WheelLegQuadraped"
+    output = "screen"/>
+
+</launch>

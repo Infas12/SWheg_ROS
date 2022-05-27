@@ -15,14 +15,13 @@
   
   <param 
     name="robot_description" 
-    command="$(find xacro)/xacro $(find wheelleg_description)/urdf/Hexapod.xacro" />
+    command="$(find xacro)/xacro $(find wheelleg_description)/urdf/Quadraped.xacro" />
 
   <node
     name="spawn_model"
     pkg="gazebo_ros"
     type="spawn_model"
-    args="-param robot_description -urdf -model WheelLeg "
-    output="screen" />
+    args="-param robot_description -urdf -model WheelLeg "/>
 
   <node
     name="fake_joint_calibration"
@@ -31,14 +30,15 @@
     args="pub /calibrated std_msgs/Bool true" />
 
   <rosparam 
-    file="$(find wheelleg_gazebo)/config/WheelLegHexapod_control.yaml" 
+    file="$(find wheelleg_gazebo)/config/WheelLegQuadraped_control.yaml" 
     command="load"/>
 
   <node
     name   = "chassisGazeboInterface"
     pkg    = "wheelleg_gazebo"
     type   = "ChassisGazeboInterface.py"
-    args   = "-n WheelLegHexapod" />
+    args   = "-n WheelLegQuadraped"
+    output = "screen"/>
 
   <node
     name = "joystick"
@@ -50,27 +50,20 @@
     pkg="controller_manager" 
     type="spawner" 
     respawn="false"
-    output="screen" 
-    ns="/WheelLegHexapod" 
+    ns="/WheelLegQuadraped" 
     args="
       RB_Joint_velocity_controller
       RF_Joint_velocity_controller
       LB_Joint_velocity_controller
       LF_Joint_velocity_controller
-      LM_Joint_velocity_controller
-      RM_Joint_velocity_controller
       RBRA_Joint_position_controller 
       RFRA_Joint_position_controller 
       LBRA_Joint_position_controller 
       LFRA_Joint_position_controller
-      LMRA_Joint_position_controller
-      RMRA_Joint_position_controller
       RBRB_Joint_position_controller 
       RFRB_Joint_position_controller 
       LBRB_Joint_position_controller 
       LFRB_Joint_position_controller
-      LMRB_Joint_position_controller
-      RMRB_Joint_position_controller
       joint_state_controller"/>
 
     <node 
@@ -78,14 +71,12 @@
       pkg="controller_manager" 
       type="spawner" 
       respawn="false" 
-      ns="/WheelLegHexapod"
+      ns="/WheelLegQuadraped"
       args="--stopped 
       RB_Joint_position_controller
       RF_Joint_position_controller
       LB_Joint_position_controller
-      LF_Joint_position_controller
-      LM_Joint_position_controller
-      RM_Joint_position_controller"/>
+      LF_Joint_position_controller"/>
 
 
 </launch>

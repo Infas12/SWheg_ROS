@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import rospy
+import argparse
 from JointController import TransformJointController , WheelJointController, JointControllerManager
 from controller_manager_msgs.srv import SwitchController
 from wheelleg_control.msg import WheelLegControlMsg
@@ -10,11 +11,15 @@ def jointCommandCallback(msg):
     print(msg)
 
 if __name__ == '__main__':    
-
+    
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-n","--name",type=str,help="robot name specified in gazebo ros_control")
+    args, unknown = parser.parse_known_args()
+    
     rospy.init_node('chassisController', anonymous=True)
     r = rospy.Rate(100)
     
-    robotName = "WheelLegHexapod"
+    robotName = args.name
     
     #wait for switch_controller
     rospy.wait_for_service('/' + robotName + '/controller_manager/switch_controller')

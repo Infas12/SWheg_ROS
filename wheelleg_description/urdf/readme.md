@@ -1,1 +1,0 @@
-> rosrun xacro xacro WheelLeg.xacro > WheelLeg.urdf

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="WheelLegQuadraped">
+
+  <!--load model definations-->
+  <xacro:include filename="$(find wheelleg_description)/urdf/WheelLeg.xacro"/>
+
+  <!--load gazebo specific configuration-->
+  <xacro:include filename="$(find wheelleg_description)/urdf/WheelLeg.gazebo"/>
+
+
+  <!--load control interface for robot-->
+  <gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+      <robotNamespace>/WheelLegQuadraped</robotNamespace>
+    </plugin>
+  </gazebo>
+
+
+  <!--define joints-->
+  <xacro:LeftWheelLeg name="LF" x="0.4" y="0.2" z="0.02" />
+  <xacro:LeftWheelLeg name="LB" x="-0.4" y="0.2" z="0.02" />
+
+  <xacro:RightWheelLeg name="RF" x="0.4" y="-0.2" z="0.02" />
+  <xacro:RightWheelLeg name="RB" x="-0.4" y="-0.2" z="0.02" />
+
+
+  <!--add gazebo joint configures-->
+  <xacro:wheelLegJointConfig name="LF" />
+  <xacro:wheelLegJointConfig name="LB" />
+
+  <xacro:wheelLegJointConfig name="RF" />
+  <xacro:wheelLegJointConfig name="RB" />
+
+
+
+</robot>
