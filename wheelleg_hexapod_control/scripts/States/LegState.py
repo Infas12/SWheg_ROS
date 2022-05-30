@@ -25,23 +25,12 @@ class LegState(RobotState):
         
         while(not self.stateChangeFlag):
             
-            
-            
-            # MotorManager.instance().getMotor("LF_Joint").positionSet = -self.getPosTrot(self.tick,self.period)
-            # MotorManager.instance().getMotor("LM_Joint").positionSet = -self.getPosTrot(self.tick + 0.5*self.period ,self.period)
-            # MotorManager.instance().getMotor("LB_Joint").positionSet = -self.getPosTrot(self.tick,self.period)
-            # MotorManager.instance().getMotor("RF_Joint").positionSet = self.getPosTrot(self.tick + 0.5*self.period,self.period)
-            # MotorManager.instance().getMotor("RM_Joint").positionSet = self.getPosTrot(self.tick,self.period)
-            # MotorManager.instance().getMotor("RB_Joint").positionSet = self.getPosTrot(self.tick + 0.5*self.period,self.period)            
-
             if self.joyData is not None:
-                self.Vw = 700.0 * self.joyData.axes[0]
-                
+                self.Vw = 700.0 * self.joyData.axes[0]  
                 self.Vy = 20.0 * self.joyData.axes[1]
                 self.Vy = min(7,self.Vy)
                 self.Vy = max(-7,self.Vy)
             
-            print(self.Vw)
             self.tick += self.Vy * 1
             
             MotorManager.instance().getMotor("LF_Joint").positionSet = -self.generate_position(self.period,1000+self.Vw,self.tick + int(0.5*self.period))
