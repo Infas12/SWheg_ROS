@@ -17,11 +17,11 @@ class TransitionState(RobotState):
         self.initialPos = {} # initial pos of motors when entering the state
         
         self.targetPos = {"LF_Joint":0.0,
-                          "LM_Joint":3.14159/2.0,
+                          "LM_Joint":0.0,
                           "LB_Joint":0.0,
-                          "RB_Joint":3.14159/2.0,
+                          "RB_Joint":0.0,
                           "RM_Joint":0.0,
-                          "RF_Joint":3.14159/2.0
+                          "RF_Joint":0.0
                           }
         
         self.changePos = {}
