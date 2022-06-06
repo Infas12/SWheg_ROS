@@ -2,7 +2,7 @@
 import rospy
 import smach
 from States.Motor import Motor, MotorManager
-from wheelleg_control.msg import WheelLegControlMsg
+from wheelleg_hexapod_control.msg import WheelLegControlMsg
 from sensor_msgs.msg import Joy
 
 class ContorlMode:

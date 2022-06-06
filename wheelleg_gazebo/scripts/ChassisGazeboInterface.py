@@ -3,7 +3,7 @@ import rospy
 import argparse
 from JointController import TransformJointController , WheelJointController, JointControllerManager
 from controller_manager_msgs.srv import SwitchController
-from wheelleg_control.msg import WheelLegControlMsg
+from wheelleg_hexapod_control.msg import WheelLegControlMsg
 
 
 def jointCommandCallback(msg):

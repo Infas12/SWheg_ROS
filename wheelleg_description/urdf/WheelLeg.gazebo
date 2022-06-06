@@ -39,7 +39,29 @@
     </gazebo>
 
     <xacro:rimJointConfig name="${name}RA"/>
-    <xacro:rimJointConfig name="${name}RB"/>  
+    <xacro:rimJointConfig name="${name}RB"/>
+
   </xacro:macro>
+
+  <!--add collision sensors to rims-->
+  <xacro:macro name="WheelLegCollisionPluginConfig" params="name">
+    <gazebo reference="${name}RA">
+       <sensor name = "${name}RA_contact" type="contact">
+          <plugin name="contactPlugin" filename="libunitreeFootContactPlugin.so"/>
+          <contact>
+            <collision>${name}RA_collision</collision>
+          </contact>
+       </sensor>
+    </gazebo>
+    <gazebo reference="${name}RB">
+       <sensor name = "${name}RB_contact" type="contact">
+          <plugin name="contactPlugin" filename="libunitreeFootContactPlugin.so"/>
+          <contact>
+            <collision>${name}RB_collision</collision>
+          </contact>
+       </sensor>
+    </gazebo>
+  </xacro:macro>
+
 
 </robot>

@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-import imp
 import rospy
 import smach
 from States.WheelState import WheelState
