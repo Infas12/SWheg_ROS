@@ -11,6 +11,13 @@ Use of this source code is governed by the MPL-2.0 license, see LICENSE.
 #include <gazebo/sensors/sensors.hh>
 #include <geometry_msgs/WrenchStamped.h>
 
+
+float getSqrNorm(const gazebo::msgs::Vector3d& vector)
+{
+    float normsqr = vector.x()*vector.x() + vector.y()*vector.y() + vector.z()*vector.z();
+    return normsqr;
+}
+
 namespace gazebo
 {
     class UnitreeFootContactPlugin : public SensorPlugin
@@ -43,38 +50,81 @@ namespace gazebo
         private:
         void OnUpdate()
         {
+            
             msgs::Contacts contacts;
             contacts = this->parentSensor->Contacts();
             count = contacts.contact_size();
-            // std::cout << count <<"\n";
+            int validContactCount = 0;
+
             for (unsigned int i = 0; i < count; ++i){
+                
                 if(contacts.contact(i).position_size() != 1){
-                    ROS_ERROR("Contact count isn't correct!!!!");
-                }     
+                    //ROS_ERROR("Contact count isn't correct!!!!");
+                }
+
                 for (unsigned int j = 0; j < contacts.contact(i).position_size(); ++j){                 
-                    // std::cout << i <<" "<< contacts.contact(i).position_size() <<" Force:"
+
+                    // if(getSqrNorm(contacts.contact(i).wrench(j).body_1_wrench().force())<0.001)
+                    // {
+                    //     continue;
+                    // }
+
+                    validContactCount++;
+
+                    // std::cout << "Collision between[" << contacts.contact(i).collision1()
+                    //           << "] and [" << contacts.contact(i).collision2() << std::endl;
+                    
+                    // std::cout << "contact" << j+1 << "of" << contacts.contact(i).position_size() <<" Wrench:"
                     //           << contacts.contact(i).wrench(j).body_1_wrench().force().x() << " "
                     //           << contacts.contact(i).wrench(j).body_1_wrench().force().y() << " "
-                    //           << contacts.contact(i).wrench(j).body_1_wrench().force().z() << "\n";
-                    Fx += contacts.contact(i).wrench(0).body_1_wrench().force().x(); // Notice: the force is in local coordinate, not in world or base coordnate.
-                    Fy += contacts.contact(i).wrench(0).body_1_wrench().force().y();
-                    Fz += contacts.contact(i).wrench(0).body_1_wrench().force().z();
+                    //           << contacts.contact(i).wrench(j).body_1_wrench().force().z() << " "
+                    //           << contacts.contact(i).wrench(j).body_1_wrench().torque().x() << " "
+                    //           << contacts.contact(i).wrench(j).body_1_wrench().torque().y() << " "
+                    //           << contacts.contact(i).wrench(j).body_1_wrench().torque().z() << "\n";
+                    
+                    // std::cout << j << "  Position:"
+                    //             << contacts.contact(i).position(j).x() << " "
+                    //             << contacts.contact(i).position(j).y() << " "
+                    //             << contacts.contact(i).position(j).z() << "\n";
+                    // std::cout << "   Normal:"
+                    //             << contacts.contact(i).normal(j).x() << " "
+                    //             << contacts.contact(i).normal(j).y() << " "
+                    //             << contacts.contact(i).normal(j).z() << "\n";
+                    // std::cout << "   Depth:" << contacts.contact(i).depth(j) << "\n";
+
+                    Fx += contacts.contact(i).wrench(j).body_1_wrench().force().x(); // Notice: the force is in local coordinate, not in world or base coordnate.
+                    Fy += contacts.contact(i).wrench(j).body_1_wrench().force().y();
+                    Fz += contacts.contact(i).wrench(j).body_1_wrench().force().z();
+
+                    Px = contacts.contact(i).position(j).x();
+                    Py = contacts.contact(i).position(j).y();
+                    Pz = contacts.contact(i).position(j).z();
+                    
                 }
+
+                //std::cout<< "Force Magnitude" << Fx*Fx + Fy*Fy + Fz*Fz << std::endl;
             }
-            if(count != 0){           
+
+            if(validContactCount != 0){
                 force.wrench.force.x = Fx/double(count);
                 force.wrench.force.y = Fy/double(count);
                 force.wrench.force.z = Fz/double(count);
-                count = 0;
-                Fx = 0;
-                Fy = 0;
-                Fz = 0;
-            }
-            else{
+                force.wrench.torque.x = Px; //Using torque field to store contact point infomation
+                force.wrench.torque.y = Py;
+                force.wrench.torque.z = Pz;
+            }else{
                 force.wrench.force.x = 0;
                 force.wrench.force.y = 0;
                 force.wrench.force.z = 0;
+                force.wrench.torque.x = 0; //Using torque field to store contact point infomation
+                force.wrench.torque.y = 0;
+                force.wrench.torque.z = 0;
             }
+
+            count = 0;
+            Fx = 0;
+            Fy = 0;
+            Fz = 0;
             this->force_pub.publish(force);
         }
 
@@ -87,6 +137,7 @@ namespace gazebo
             geometry_msgs::WrenchStamped force;
             int count = 0;
             double Fx=0, Fy=0, Fz=0;
+            double Px=0, Py=0, Pz=0;
     };
     GZ_REGISTER_SENSOR_PLUGIN(UnitreeFootContactPlugin)
 }

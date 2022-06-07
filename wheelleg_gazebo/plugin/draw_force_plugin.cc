@@ -58,14 +58,18 @@ namespace gazebo
 
         void OnUpdate()
         {
-            this->line->SetPoint(1, ignition::math::Vector3d(Fx, Fy, Fz));
+            //this-> line-> SetPoint(0, ignition::math::Vector3d(Px, Py, Pz));
+            this-> line-> SetPoint(1, ignition::math::Vector3d(Fx, Fy, Fz));
         }
 
         void GetForceCallback(const geometry_msgs::WrenchStamped & msg)
         {
-            Fx = msg.wrench.force.x/20.0;
-            Fy = msg.wrench.force.y/20.0;
-            Fz = msg.wrench.force.z/20.0;
+            Fx = msg.wrench.force.x/50.0;
+            Fy = msg.wrench.force.y/50.0;
+            Fz = msg.wrench.force.z/50.0;
+            Px = msg.wrench.torque.x;
+            Py = msg.wrench.torque.y;
+            Pz = msg.wrench.torque.z;
             // Fx = msg.wrench.force.x;
             // Fy = msg.wrench.force.y;
             // Fz = msg.wrench.force.z;
@@ -79,6 +83,7 @@ namespace gazebo
             std::string visual_namespace;
             ros::Subscriber force_sub;
             double Fx=0, Fy=0, Fz=0;
+            double Px=0, Py=0, Pz=0;
             event::ConnectionPtr update_connection;
     };
     GZ_REGISTER_VISUAL_PLUGIN(UnitreeDrawForcePlugin)

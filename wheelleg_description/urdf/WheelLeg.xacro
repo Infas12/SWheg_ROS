@@ -114,7 +114,7 @@
             rgba="1 1 1 1" />
         </material>
       </visual>
-      <collision>
+      <collision name = "${name}RA_collision">
         <origin
           xyz="0 0 0"
           rpy="0 0 0" />
@@ -335,7 +335,7 @@
             rgba="1 1 1 1" />
         </material>
       </visual>
-      <collision>
+      <collision name = "${name}RB_collision">
         <origin
           xyz="0 0 0"
           rpy="0 0 0" />

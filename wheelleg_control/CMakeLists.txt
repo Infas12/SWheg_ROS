@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(wheelleg_hexapod_control)
+project(wheelleg_control)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -48,9 +48,10 @@ find_package(catkin REQUIRED COMPONENTS
 ##   * add every package in generate_messagesMSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
-# add_message_files(
-#   FILES
-# )
+add_message_files(
+  FILES
+  WheelLegControlMsg.msg
+)
 
 ## Generate services in the 'srv' folder
 # add_service_files(
