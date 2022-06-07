@@ -96,10 +96,6 @@ namespace gazebo
                     Fy += contacts.contact(i).wrench(j).body_1_wrench().force().y();
                     Fz += contacts.contact(i).wrench(j).body_1_wrench().force().z();
 
-                    Px = contacts.contact(i).position(j).x();
-                    Py = contacts.contact(i).position(j).y();
-                    Pz = contacts.contact(i).position(j).z();
-                    
                 }
 
                 //std::cout<< "Force Magnitude" << Fx*Fx + Fy*Fy + Fz*Fz << std::endl;
@@ -109,9 +105,6 @@ namespace gazebo
                 force.wrench.force.x = Fx/double(count);
                 force.wrench.force.y = Fy/double(count);
                 force.wrench.force.z = Fz/double(count);
-                force.wrench.torque.x = Px; //Using torque field to store contact point infomation
-                force.wrench.torque.y = Py;
-                force.wrench.torque.z = Pz;
             }else{
                 force.wrench.force.x = 0;
                 force.wrench.force.y = 0;

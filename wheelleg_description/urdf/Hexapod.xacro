@@ -36,11 +36,14 @@
   <xacro:wheelLegJointConfig name="RM" />
   <xacro:wheelLegJointConfig name="RB" />
 
+  <!--Collision Display Plugin-->
+  <!-- 
   <xacro:WheelLegCollisionPluginConfig name="LF"/>
   <xacro:WheelLegCollisionPluginConfig name="LM"/>
   <xacro:WheelLegCollisionPluginConfig name="LB"/>
   <xacro:WheelLegCollisionPluginConfig name="RF"/>
   <xacro:WheelLegCollisionPluginConfig name="RM"/>
-  <xacro:WheelLegCollisionPluginConfig name="RB"/>
+  <xacro:WheelLegCollisionPluginConfig name="RB"/> 
+  -->
 
 </robot>

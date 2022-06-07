@@ -37,8 +37,6 @@ class TransitionState(RobotState):
     def execute(self, userdata):
         r = rospy.Rate(1000)
         
-        self.stateChangeFlag = False
-        
         for name in self.motorNameList:
             self.initialPos[name] = MotorManager.instance().getMotor(name).positionFdb # Get the initial position of the motor
             self.changePos[name] = (self.targetPos[name] - self.initialPos[name]) % (2.0*3.14159) - 3.14159 # calculate the change of angle of this motor ([-pi to pi])
@@ -59,12 +57,7 @@ class TransitionState(RobotState):
                 motor.positionSet = self.initialPos[name] + alpha*self.changePos[name]
                 
             self.sendData()
-            r.sleep()
-        
-        while not self.stateChangeFlag:
-            self.IsLeggedMode = True
-            self.sendData()
-            r.sleep()            
+            r.sleep()        
         
         return "TransformCompleted"
     
