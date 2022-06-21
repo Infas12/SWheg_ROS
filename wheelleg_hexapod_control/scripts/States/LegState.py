@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 from ast import Pass
+
+from std_msgs.msg import Float32
 import rospy
 from States.Motor import MotorManager
 from RobotState import RobotState, ContorlMode
@@ -8,40 +10,98 @@ from RobotState import RobotState, ContorlMode
 class LegState(RobotState):
     
     def __init__(self):
-        RobotState.__init__(self, outcomes=["Transform"])
+        RobotState.__init__(self, outcomes=["Transform","Stop"])
         self.motorControlMode = ContorlMode.POS_MODE
         self.IsLeggedMode = True 
+        self.trajectoryTick = 0
         self.tick = 0
         self.period = 1500 # gait cycle
         self.Vy = 0.0
         self.Vw = 0.0
         
-    
+        self.transformDuration = 1000
+        self.relaxTick         = 0
+        
+        self.initialPos = {} # initial pos of motors when entering the state
+        self.targetPos = {
+            "LF_Joint" : -self.generate_position(self.period,1000,self.trajectoryTick + (0.5*self.period)),
+            "LM_Joint" : -self.generate_position(self.period,1000,self.trajectoryTick),
+            "LB_Joint" : -self.generate_position(self.period,1000,self.trajectoryTick + (0.5*self.period)),
+            "RF_Joint" :  self.generate_position(self.period,1000,self.trajectoryTick),
+            "RM_Joint" :  self.generate_position(self.period,1000,self.trajectoryTick + (0.5*self.period)),
+            "RB_Joint" :  self.generate_position(self.period,1000,self.trajectoryTick)
+        }
+        self.changePos = {}
+        
+        self.pub = rospy.Publisher('chatter', Float32, queue_size=10)
+
     def execute(self, userdata):
         
         self.stateChangeFlag = False
-        self.tick = 0
-        r = rospy.Rate(1000)
+        self.Initialized     = False
+        self.trajectoryTick  = 0
+        self.tick            = 0
+        self.relaxTick       = 0
+        r = rospy.Rate(100)
         
+        
+        ## initialize to leg state canonical form
+        for name in self.motorNameList:
+            self.initialPos[name] = MotorManager.instance().getMotor(name).positionFdb # Get the initial position of the motor
+            self.changePos[name] = (self.targetPos[name] - self.initialPos[name]) % (2.0*3.1415926)# calculate the change of angle of this motor ([-pi to pi])
+            if(self.changePos[name]>3.1415926):
+                self.changePos[name] = self.changePos[name] - 2.0*3.1415926
+                
+            
         while(not self.stateChangeFlag):
             
-            if self.joyData is not None:
-                self.Vw = 700.0 * self.joyData.axes[0]  
-                self.Vy = 20.0 * self.joyData.axes[1]
-                self.Vy = min(7,self.Vy)
-                self.Vy = max(-7,self.Vy)
+            self.tick += 1
             
-            self.tick += self.Vy * 1
+            if self.tick < self.transformDuration:
+                for name in self.motorNameList:
+                    # linear interp of motor position
+                    # theta = theta_0 + (1-alpha)*theta_target
+                    motor = MotorManager.instance().getMotor(name)
+                    alpha = self.tick/float(self.transformDuration)
+                    motor.positionSet = self.initialPos[name] + alpha*self.changePos[name]
             
-            MotorManager.instance().getMotor("LF_Joint").positionSet = -self.generate_position(self.period,1000+self.Vw,self.tick + int(0.5*self.period))
-            MotorManager.instance().getMotor("LM_Joint").positionSet = -self.generate_position(self.period,1000+self.Vw,self.tick)
-            MotorManager.instance().getMotor("LB_Joint").positionSet = -self.generate_position(self.period,1000+self.Vw,self.tick + int(0.5*self.period))
-            MotorManager.instance().getMotor("RF_Joint").positionSet =  self.generate_position(self.period,1000-self.Vw,self.tick)
-            MotorManager.instance().getMotor("RM_Joint").positionSet =  self.generate_position(self.period,1000-self.Vw,self.tick + int(0.5*self.period))
-            MotorManager.instance().getMotor("RB_Joint").positionSet =  self.generate_position(self.period,1000-self.Vw,self.tick)            
-        
-            self.sendData()
+            else:
+                # handle joystick command
+                if self.joyData is not None:
+                    self.Vw = 700.0 * self.joyData.axes[0]  
+                    self.Vy = 1.0 * self.joyData.axes[1]
+                    self.Vy = min(3,self.Vy)
+                    self.Vy = max(-3,self.Vy) 
+                    self.Vy = -3.0
+                    
+                # the trajectory is clock-driven.
+                self.trajectoryTick += self.Vy * 1.0
+                
+
+                
+                # set position
+                MotorManager.instance().getMotor("LF_Joint").positionSet = -self.generate_position(self.period,1000+self.Vw,self.trajectoryTick + 0.5*self.period)
+                MotorManager.instance().getMotor("LM_Joint").positionSet = -self.generate_position(self.period,1000+self.Vw,self.trajectoryTick)
+                MotorManager.instance().getMotor("LB_Joint").positionSet = -self.generate_position(self.period,1000+self.Vw,self.trajectoryTick + 0.5*self.period)
+                MotorManager.instance().getMotor("RF_Joint").positionSet =  self.generate_position(self.period,1000-self.Vw,self.trajectoryTick)
+                MotorManager.instance().getMotor("RM_Joint").positionSet =  self.generate_position(self.period,1000-self.Vw,self.trajectoryTick + 0.5*self.period)
+                MotorManager.instance().getMotor("RB_Joint").positionSet =  self.generate_position(self.period,1000-self.Vw,self.trajectoryTick)            
             
+                a = Float32()
+                a.data = MotorManager.instance().getMotor("RF_Joint").positionSet
+                self.pub.publish(a)
+            
+            if self.Vw**2 + self.Vy**2 < 0.1:
+                self.relaxTick +=1
+            else:
+                self.relaxTick =0
+            
+            # change to relax state
+            if self.relaxTick > 1000:
+                return "Stop"
+            
+            
+            self.sendData()            
             r.sleep()
         
         return "Transform"
@@ -50,13 +110,13 @@ class LegState(RobotState):
     def generate_position(self,period,time_stance,timestamp):
         
         PI = 3.1415926
+        theta_hit   = - (PI - 0.7)
+        theta_leave = - 0.4        
+
         time_flight = period - time_stance
 
         turns = int(timestamp / period)
         x     = float(timestamp % period)
-        
-        theta_hit   = - (PI - 0.7)
-        theta_leave = - 0.4
         
         k_flight = float(theta_hit - theta_leave) / float(time_flight)
         k_stance = float(- PI - theta_hit + theta_leave) / float(time_stance)
@@ -75,9 +135,16 @@ class LegState(RobotState):
         
         y = 0
         
-        if turns % 2 == 0: #even
-            y = angle_in_one_period
-        else: #odd
-            y =  PI + angle_in_one_period
-         
+        if turns >= 0:
+            if turns % 2 == 0: #even
+                y = angle_in_one_period
+            else: #odd
+                y =  PI + angle_in_one_period
+        else:
+            if turns % 2 == 0: #even
+                y = angle_in_one_period
+            else: #odd
+                y = PI + angle_in_one_period            
+        
+        
         return y

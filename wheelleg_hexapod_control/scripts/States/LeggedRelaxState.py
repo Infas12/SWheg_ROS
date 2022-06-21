@@ -4,15 +4,15 @@ from States.Motor import MotorManager
 from RobotState import RobotState, ContorlMode
 
 
-class TransitionState(RobotState):
+class LeggedRelaxState(RobotState):
     
     def __init__(self):
         
-        RobotState.__init__(self, outcomes=["TransformCompleted"])
+        RobotState.__init__(self, outcomes=["Walk","Wheel"])
         
-        self.motorControlMode = ContorlMode.POS_MODE # In transition state we'll control position
+        self.motorControlMode = ContorlMode.POS_MODE 
         
-        self.IsLeggedMode = False # remain wheel mode
+        self.IsLeggedMode = True 
                 
         self.initialPos = {} # initial pos of motors when entering the state
         
@@ -25,13 +25,8 @@ class TransitionState(RobotState):
                           }
         
         self.changePos = {}
-        
-
-        
         self.tramsformCompleted = False # transform complete flag
-        
         self.tick = 0 # timer
-        
         self.transformDuration = 1000 # the duration of transform in ms
         
     def execute(self, userdata):
@@ -43,21 +38,29 @@ class TransitionState(RobotState):
             if(self.changePos[name]>3.14159):
                 self.changePos[name] = self.changePos[name] - 2.0*3.14159
         # clean-up all data
-        self.tramsformCompleted = False 
+        self.tramsformCompleted = False
+        self.stateChangeFlag = False
         self.tick = 0
-
-        while(self.tick<self.transformDuration):
-            
-            self.tick += 1
-            
-            for name in self.motorNameList:
-                # linear interp of motor position
-                # theta = theta_0 + (1-alpha)*theta_target
-                motor = MotorManager.instance().getMotor(name)
-                alpha = self.tick/float(self.transformDuration)
-                motor.positionSet = self.initialPos[name] + alpha*self.changePos[name]
-            self.sendData()
-            r.sleep()        
         
-        return "TransformCompleted"
+        err =  [abs(ele) for ele in self.changePos.values()]
+        if sum(err)>0.1:            
+            while(self.tick<self.transformDuration):
+                self.tick += 1
+                for name in self.motorNameList:
+                    # linear interp of motor position
+                    # theta = theta_0 + (1-alpha)*theta_target
+                    motor = MotorManager.instance().getMotor(name)
+                    alpha = self.tick/float(self.transformDuration)
+                    motor.positionSet = self.initialPos[name] + alpha*self.changePos[name]
+                self.sendData()
+                r.sleep()        
+    
+        while self.joyData.axes[1] == 0 and not self.stateChangeFlag:
+            self.sendData()
+            r.sleep()
+        
+        if self.stateChangeFlag:
+            return "Wheel"
+        else:
+            return "Walk"
     

@@ -22,7 +22,6 @@ class WheelState(RobotState):
         self.Vy = 0.0
         self.Vw = 0.0
         
-        print(self.Vy)
 
         while(not self.stateChangeFlag):
 
