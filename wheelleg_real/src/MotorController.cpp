@@ -10,9 +10,9 @@
 #include <fstream>
 
 
-#define MOTOR_NUM 6
+#define MOTOR_NUM 4
 M3508 ChassisMotor[MOTOR_NUM];
-std::string chassisMotorName[MOTOR_NUM] = {"LF_Joint","LM_Joint","LB_Joint","RF_Joint","RM_Joint","RB_Joint"};
+std::string chassisMotorName[MOTOR_NUM] = {"LF_Joint","LB_Joint","RF_Joint","RB_Joint"};
 std::map<std::string, M3508*> chassisMotorNameMap;
 
 void controlCallback(const wheelleg_control::WheelLegControlMsg& msg){
@@ -56,8 +56,8 @@ int main(int argc, char **argv)
 {
     ros::init(argc, argv, "motorController");    
     ros::NodeHandle n;  
-    ros::Subscriber control_sub = n.subscribe("/WheelLegHexapod/command", 10, controlCallback);
-    ros::Publisher motor_data_pub = n.advertise<sensor_msgs::JointState>("/WheelLegHexapod/joint_states", 10);
+    ros::Subscriber control_sub = n.subscribe("/WheelLegQuadraped/command", 10, controlCallback);
+    ros::Publisher motor_data_pub = n.advertise<sensor_msgs::JointState>("/WheelLegQuadraped/joint_states", 10);
     ros::Rate loop_rate(100);
 
     for(int i = 0; i < MOTOR_NUM; i++)
