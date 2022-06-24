@@ -34,7 +34,7 @@ class WheelState(RobotState):
             MotorManager.instance().getMotor("LB_Joint").speedSet = (self.Vy-self.Vw)*1.0
             MotorManager.instance().getMotor("RF_Joint").speedSet = (self.Vy+self.Vw)*-1.0
             MotorManager.instance().getMotor("RB_Joint").speedSet = (self.Vy+self.Vw)*-1.0                        
-        
+            
             self.sendData()
             
             r.sleep()
