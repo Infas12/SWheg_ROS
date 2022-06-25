@@ -17,8 +17,8 @@ if __name__ == '__main__':
         #                        transitions={'TransformCompleted':'LEG'})
         # smach.StateMachine.add('LEG',LegState(),
         #                        transitions={'Transform':'WHEEL'})       
-        smach.StateMachine.add('TEST',TestState(),
-                               transitions={'Finished':'exit'})
+        smach.StateMachine.add('TEST',LegState(),
+                               transitions={'Transform':'exit'})
          
     outcome = sm.execute()
     
