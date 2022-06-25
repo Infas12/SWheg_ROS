@@ -1,0 +1,5 @@
+<launch>
+    <!-- <node pkg="joy" type="joy_node" name="joy_node" ></node> -->
+    <node pkg="wheelleg_real" type="motorController" name="motorController" ></node>
+    <node pkg="wheelleg_quadraped_control" type="SmachTest.py" name="SmachTest" ></node>
+</launch>

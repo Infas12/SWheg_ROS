@@ -79,10 +79,12 @@ int main(int argc, char **argv)
     CanManager::Instance()->SetPortName("can0");
     CanManager::Instance()->Init();
 
-    sensor_msgs::JointState JointFdb;
 
+    int index =0;
     while (ros::ok())
     {   
+        sensor_msgs::JointState JointFdb;
+
         for(int i = 0; i < MOTOR_NUM; i++){
             ChassisMotor[i].Update(); //Update Motor Control
         }

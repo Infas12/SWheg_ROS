@@ -2,7 +2,7 @@
 from ast import Pass
 import rospy
 from States.Motor import MotorManager
-from RobotState import RobotState, ContorlMode
+from States.RobotState import RobotState, ContorlMode
 
 
 class LegState(RobotState):

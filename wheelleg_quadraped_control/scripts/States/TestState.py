@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import rospy
 from States.Motor import MotorManager
-from RobotState import RobotState, ContorlMode
+from States.RobotState import RobotState, ContorlMode
 
 
 class TestState(RobotState):
@@ -27,27 +27,31 @@ class TestState(RobotState):
         while(self.tick<10000):
             
             self.tick += 1
-            
+
+            if self.tick%1000 == 0:
+                now = rospy.get_rostime()
+                rospy.logwarn('tick: %f, Current time %i %i',self.tick,now.secs, now.nsecs)
+
             if self.tick < 1000:
-                MotorManager.instance().getMotor("LF_Joint").speedSet = 20.0
+                MotorManager.instance().getMotor("LF_Joint").speedSet = 5.0
                 MotorManager.instance().getMotor("LB_Joint").speedSet = 0.0
                 MotorManager.instance().getMotor("RF_Joint").speedSet = 0.0
                 MotorManager.instance().getMotor("RB_Joint").speedSet = 0.0
             elif self.tick < 2000:
                 MotorManager.instance().getMotor("LF_Joint").speedSet = 0.0
-                MotorManager.instance().getMotor("LB_Joint").speedSet = 20.0
+                MotorManager.instance().getMotor("LB_Joint").speedSet = 2.0
                 MotorManager.instance().getMotor("RF_Joint").speedSet = 0.0
                 MotorManager.instance().getMotor("RB_Joint").speedSet = 0.0
             elif self.tick < 3000:
                 MotorManager.instance().getMotor("LF_Joint").speedSet = 0.0
                 MotorManager.instance().getMotor("LB_Joint").speedSet = 0.0
-                MotorManager.instance().getMotor("RF_Joint").speedSet = 20.0
+                MotorManager.instance().getMotor("RF_Joint").speedSet = 2.0
                 MotorManager.instance().getMotor("RB_Joint").speedSet = 0.0
             elif self.tick < 4000:
                 MotorManager.instance().getMotor("LF_Joint").speedSet = 0.0
                 MotorManager.instance().getMotor("LB_Joint").speedSet = 0.0
                 MotorManager.instance().getMotor("RF_Joint").speedSet = 0.0
-                MotorManager.instance().getMotor("RB_Joint").speedSet = 20.0       
+                MotorManager.instance().getMotor("RB_Joint").speedSet = 2.0       
             elif self.tick < 5000:
                 MotorManager.instance().getMotor("LF_Joint").speedSet = 0.0
                 MotorManager.instance().getMotor("LB_Joint").speedSet = 0.0
@@ -55,13 +59,13 @@ class TestState(RobotState):
                 MotorManager.instance().getMotor("RB_Joint").speedSet = 0.0
                 self.motorControlMode = ContorlMode.POS_MODE
             elif self.tick < 6000:
-                MotorManager.instance().getMotor("LF_Joint").positionSet = 1.0
+                MotorManager.instance().getMotor("LF_Joint").positionSet = 0.5
             elif self.tick < 7000:
-                MotorManager.instance().getMotor("LB_Joint").positionSet = 1.0
+                MotorManager.instance().getMotor("LB_Joint").positionSet = 0.5
             elif self.tick < 8000:
-                MotorManager.instance().getMotor("RF_Joint").positionSet = 1.0
+                MotorManager.instance().getMotor("RF_Joint").positionSet = 0.5
             elif self.tick < 9000:
-                MotorManager.instance().getMotor("RB_Joint").positionSet = 1.0
+                MotorManager.instance().getMotor("RB_Joint").positionSet = 0.5
             
             
             self.sendData()
