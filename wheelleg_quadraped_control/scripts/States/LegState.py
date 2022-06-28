@@ -36,10 +36,19 @@ class LegState(RobotState):
             
             print(self.Vy)  
             
-            MotorManager.instance().getMotor("LF_Joint").positionSet = -self.generate_position(self.period,1000+self.Vw,self.tick)
-            MotorManager.instance().getMotor("LB_Joint").positionSet = -self.generate_position(self.period,1000+self.Vw,self.tick + int(0.5*self.period))
-            MotorManager.instance().getMotor("RF_Joint").positionSet =  self.generate_position(self.period,1000-self.Vw,self.tick + int(0.5*self.period))
-            MotorManager.instance().getMotor("RB_Joint").positionSet =  self.generate_position(self.period,1000-self.Vw,self.tick)            
+            ## trot
+            # MotorManager.instance().getMotor("LF_Joint").positionSet = -self.generate_position(self.period,1000+self.Vw,self.tick)
+            # MotorManager.instance().getMotor("LB_Joint").positionSet = -self.generate_position(self.period,1000+self.Vw,self.tick + int(0.5*self.period))
+            # MotorManager.instance().getMotor("RF_Joint").positionSet =  self.generate_position(self.period,1000-self.Vw,self.tick + int(0.5*self.period))
+            # MotorManager.instance().getMotor("RB_Joint").positionSet =  self.generate_position(self.period,1000-self.Vw,self.tick)            
+
+
+            ## walk
+            MotorManager.instance().getMotor("LF_Joint").positionSet = -self.generate_position(self.period,1200+self.Vw,self.tick)
+            MotorManager.instance().getMotor("LB_Joint").positionSet = -self.generate_position(self.period,1200+self.Vw,self.tick + int(0.5*self.period))
+            MotorManager.instance().getMotor("RF_Joint").positionSet =  self.generate_position(self.period,1200-self.Vw,self.tick + int(0.25*self.period))
+            MotorManager.instance().getMotor("RB_Joint").positionSet =  self.generate_position(self.period,1200-self.Vw,self.tick + int(0.75*self.period))            
+
 
         
             self.sendData()
