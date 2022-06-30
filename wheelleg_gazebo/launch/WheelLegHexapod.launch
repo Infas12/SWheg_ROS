@@ -87,5 +87,17 @@
       LM_Joint_position_controller
       RM_Joint_position_controller"/>
 
+  <param 
+    name="test" 
+    command="$(find xacro)/xacro $(find wheelleg_gazebo)/world/urdf/test.xacro" />
+
+  <node
+    name="spawn_model2"
+    pkg="gazebo_ros"
+    type="spawn_model"
+    args="-param test -urdf -model stairs "
+    output="screen" />
+
+
 
 </launch>
