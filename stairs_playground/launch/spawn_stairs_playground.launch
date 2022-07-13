@@ -1,0 +1,52 @@
+<launch>
+
+
+  <arg name="num_envs" default="1"/>
+  
+  <arg name="initial_height" default ="0.05"/>
+  <arg name="increment_height" default="0.01"/>
+
+  <arg name="stair_length" default="0.3"/>
+  <arg name="stair_width" default="1"/>
+
+  <arg name="initial_x" default="0"/>
+  <arg name="initial_y" default="0"/>
+
+
+  <group ns="$(eval 'stairs_env_' + 'id' + str(arg('num_envs')) + 'length' + str(arg('stair_length')))">
+
+    
+    <arg name="pos_x" value = "$(eval arg('initial_x') + 2.0 * float(arg('num_envs')))"/>
+    <arg name="pos_y" value = "$(eval float(arg('initial_y')))"/>
+
+    <arg name="stair_height" value = "$(eval arg('initial_height') + (arg('num_envs') - 1) * arg('increment_height'))"/>
+    <arg name="model_name" value="$(eval 'stairs_' + 'height' + str(arg('stair_height')) + 'length' + str(arg('stair_length')))"/>
+
+    <param 
+      name="$(arg model_name)" 
+      command="$(find xacro)/xacro $(find stairs_playground)/urdf/stairs.xacro stair_num:=1 stair_width:=$(arg stair_width) stair_height:=$(arg stair_height) stair_length:=$(arg stair_length)" />
+
+    <node
+      name="spawn_model"
+      pkg="gazebo_ros"
+      type="spawn_model"
+      args="-param $(arg model_name) -urdf -model $(arg model_name) -x $(arg pos_x) -y $(arg pos_y)"
+      output="screen" />
+
+  </group>
+
+  <include file="$(find stairs_playground)/launch/spawn_stairs_playground.launch" if="$(eval arg('num_envs') - 1 > 0)">
+    <arg name="num_envs" value="$(eval arg('num_envs') - 1)"/> 
+    <arg name="initial_x" value = "$(arg initial_x)"/>
+    <arg name="initial_y" value = "$(arg initial_y)"/>
+    <arg name="stair_length" value="$(arg stair_length)"/>   
+
+    <arg name="initial_height" default ="$(arg initial_height)"/>
+    <arg name="increment_height" default="$(arg increment_height)"/>
+    <arg name="stair_width" default="$(arg stair_width)"/>
+
+
+  </include>
+
+
+</launch>

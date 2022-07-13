@@ -1,11 +1,6 @@
 <launch>
 
-  <include
-    file="$(find wheelleg_gazebo)/launch/empty_world.launch" >
-    <arg name="verbose" value="true" />
-    <arg name="paused" value="true" />
-    <arg name="world_name" value="$(find wheelleg_gazebo)/world/empty.world"/>
-  </include>
+  <include file="$(find stairs_playground)/launch/playground.launch" />
 
   <node
     name="tf_footprint_base"
@@ -86,18 +81,6 @@
       LF_Joint_position_controller
       LM_Joint_position_controller
       RM_Joint_position_controller"/>
-
-  <param 
-    name="test" 
-    command="$(find xacro)/xacro $(find wheelleg_gazebo)/world/urdf/test.xacro" />
-
-  <node
-    name="spawn_model2"
-    pkg="gazebo_ros"
-    type="spawn_model"
-    args="-param test -urdf -model stairs "
-    output="screen" />
-
 
 
 </launch>

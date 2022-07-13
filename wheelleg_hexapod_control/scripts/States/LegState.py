@@ -10,7 +10,7 @@ from RobotState import RobotState, ContorlMode
 class LegState(RobotState):
     
     def __init__(self):
-        RobotState.__init__(self, outcomes=["Transform","Stop"])
+        RobotState.__init__(self, outcomes=["Transform"])
         self.motorControlMode = ContorlMode.POS_MODE
         self.IsLeggedMode = True 
         self.trajectoryTick = 0
@@ -33,7 +33,6 @@ class LegState(RobotState):
         }
         self.changePos = {}
         
-        self.pub = rospy.Publisher('chatter', Float32, queue_size=10)
 
     def execute(self, userdata):
         
@@ -42,7 +41,7 @@ class LegState(RobotState):
         self.trajectoryTick  = 0
         self.tick            = 0
         self.relaxTick       = 0
-        r = rospy.Rate(100)
+        r = rospy.Rate(1000)
         
         
         ## initialize to leg state canonical form
@@ -72,12 +71,9 @@ class LegState(RobotState):
                     self.Vy = 1.0 * self.joyData.axes[1]
                     self.Vy = min(3,self.Vy)
                     self.Vy = max(-3,self.Vy) 
-                    self.Vy = -3.0
                     
                 # the trajectory is clock-driven.
                 self.trajectoryTick += self.Vy * 1.0
-                
-
                 
                 # set position
                 MotorManager.instance().getMotor("LF_Joint").positionSet = -self.generate_position(self.period,1000+self.Vw,self.trajectoryTick + 0.5*self.period)
@@ -87,18 +83,6 @@ class LegState(RobotState):
                 MotorManager.instance().getMotor("RM_Joint").positionSet =  self.generate_position(self.period,1000-self.Vw,self.trajectoryTick + 0.5*self.period)
                 MotorManager.instance().getMotor("RB_Joint").positionSet =  self.generate_position(self.period,1000-self.Vw,self.trajectoryTick)            
             
-                a = Float32()
-                a.data = MotorManager.instance().getMotor("RF_Joint").positionSet
-                self.pub.publish(a)
-            
-            if self.Vw**2 + self.Vy**2 < 0.1:
-                self.relaxTick +=1
-            else:
-                self.relaxTick =0
-            
-            # change to relax state
-            if self.relaxTick > 1000:
-                return "Stop"
             
             
             self.sendData()            

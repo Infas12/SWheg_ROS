@@ -20,12 +20,12 @@
       </material>
     </visual>
 
-    <collision>
+    <!-- <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
         <box size="0.1 0.1 0.1" />
       </geometry>
-    </collision>
+    </collision> -->
 
   </link>
 

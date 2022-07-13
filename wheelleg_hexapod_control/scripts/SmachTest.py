@@ -14,11 +14,9 @@ if __name__ == '__main__':
         smach.StateMachine.add('WHEEL',WheelState(),
                                transitions={'Transform':'TRANSITION'})
         smach.StateMachine.add('TRANSITION',TransitionState(),
-                               transitions={'TransformCompleted':'LEGRELAX'})
-        smach.StateMachine.add('LEGRELAX',LeggedRelaxState(),
-                               transitions={'Walk':'STANDARD','Wheel':"WHEEL"})  
-        smach.StateMachine.add('STANDARD',LegState(),
-                               transitions={'Transform':'WHEEL','Stop':'LEGRELAX'})       
+                               transitions={'TransformCompleted':'LEG'})
+        smach.StateMachine.add('LEG',LegState(),
+                               transitions={'Transform':'WHEEL'})       
         
          
     outcome = sm.execute()
