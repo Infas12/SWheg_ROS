@@ -27,14 +27,14 @@ class LegState(RobotState):
             
             
             if self.joyData is not None:
-                self.Vw = 70.0 * self.joyData.axes[0]  
-                self.Vy = 2.0 * self.joyData.axes[1]
-                self.Vy = min(1,self.Vy)
-                self.Vy = max(-1,self.Vy)
+                self.Vw = 1.0 * self.joyData.axes[3]  
+                self.Vy = 4.5 * self.joyData.axes[4]
+                self.Vy = min(4.5,self.Vy)
+                self.Vy = max(-4.5,self.Vy)
             
             self.tick += 1.0*self.Vy
             
-            print(self.Vy)  
+            # print(self.Vy)  
             
             ## trot
             # MotorManager.instance().getMotor("LF_Joint").positionSet = -self.generate_position(self.period,1000+self.Vw,self.tick)

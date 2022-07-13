@@ -12,7 +12,7 @@
 
 #define MOTOR_NUM 4
 M3508 ChassisMotor[MOTOR_NUM];
-std::string chassisMotorName[MOTOR_NUM] = {"LF_Joint","LB_Joint","RF_Joint","RB_Joint"};
+std::string chassisMotorName[MOTOR_NUM] = {"LF_Joint","LB_Joint","RB_Joint","RF_Joint"};
 std::map<std::string, M3508*> chassisMotorNameMap;
 
 void controlCallback(const wheelleg_control::WheelLegControlMsg& msg){
@@ -30,9 +30,9 @@ void controlCallback(const wheelleg_control::WheelLegControlMsg& msg){
         
         M3508* motor = (M3508*) iter->second;
 
-        std::cout   << name      << std::endl 
-                    << "mode:"   << (int16_t)msg.JointMode[i] << std::endl 
-                    << "command:"<< msg.JointData[i] << std::endl;
+        // std::cout   << name      << std::endl 
+        //             << "mode:"   << (int16_t)msg.JointMode[i] << std::endl 
+        //             << "command:"<< msg.JointData[i] << std::endl;
 
 
         if(msg.JointMode[i]==0) //speed mode
