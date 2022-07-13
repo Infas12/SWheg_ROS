@@ -2,7 +2,6 @@
 
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-
     <xacro:macro name="stairs" params="stairs xpos ypos zpos stair_length stair_width stair_height">
 
         <joint name="stair_joint_origin_${stairs}" type="fixed">
@@ -33,22 +32,15 @@
         </link>
 
         <xacro:if value="${stairs-1}">
-            <xacro:stairs stairs="${stairs-1}" xpos="0" ypos="${ypos+stair_length/2}" zpos="${zpos+stair_height/2}" stair_length="${stair_length}" stair_width="${stair_width}" stair_height="${stair_height}"/>
+            <xacro:stairs stairs="${stairs-1}" xpos="${stair_width/2}" ypos="${ypos+stair_length}" zpos="${zpos+stair_height/2}" stair_length="${stair_length}" stair_width="${stair_width}" stair_height="${stair_height}"/>
         </xacro:if>
 
     </xacro:macro>
 
-    <xacro:macro name="group_of_stairs" params="num stair_length stair_width stair_height">
+    <xacro:macro name="group_of_stairs" params="num stair_width stair_length stair_height">
         <!--dummy base link-->
         <link name="base_link"/>
-        <xacro:stairs stairs="${num}" xpos="0" ypos="0" zpos="${stair_height/2}" stair_length="${stair_length}" stair_width="${stair_width}" stair_height="${stair_height}"/>
+        <xacro:stairs stairs="${num}" xpos="${stair_width/2}" ypos="${stair_length/2}" zpos="${stair_height/2}" stair_length="${stair_length}" stair_width="${stair_width}" stair_height="${stair_height}"/>
     </xacro:macro>
-
-    <xacro:macro name="single_stair" params="stair_length stair_width stair_height">
-        <!--dummy base link-->
-        <link name="base_link"/>
-        <xacro:stairs stairs="1" xpos="0" ypos="0" zpos="${stair_height/2}" stair_length="${stair_length}" stair_width="${stair_width}" stair_height="${stair_height}"/>
-    </xacro:macro>    
-
 
 </robot>

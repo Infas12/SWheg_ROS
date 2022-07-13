@@ -2,11 +2,9 @@
 
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro"  name="aaa">
 
-  <link name="base_link">
-  </link>
-
   <xacro:include filename="$(find wheelleg_gazebo)/world/urdf/stairs.xacro"/>
-
-  <xacro:group_of_stairs num="5" xpos="0" ypos="0" zpos="0"/>
+<!-- 
+  <xacro:group_of_stairs num="20" stair_length="2" stair_width="1" stair_height="0.2"/> -->
+  <xacro:single_stair stair_length="1" stair_width="2" stair_height="0.2"/>
 
 </robot>
