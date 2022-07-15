@@ -43,9 +43,12 @@ class LegState(RobotState):
 
 
             ## walk
-            MotorManager.instance().getMotor("L_Joint").positionSet = -self.generate_position(self.period,1200+self.Vw,self.tick)
-            MotorManager.instance().getMotor("R_Joint").positionSet =  self.generate_position(self.period,1200-self.Vw,self.tick)            
+            # MotorManager.instance().getMotor("L_Joint").positionSet = -self.generate_position(self.period,1200+self.Vw,self.tick)
+            # MotorManager.instance().getMotor("R_Joint").positionSet =  self.generate_position(self.period,1200-self.Vw,self.tick)            
 
+            ## segway test
+            MotorManager.instance().getMotor("L_Joint").positionSet -= self.Vy * 0.01
+            MotorManager.instance().getMotor("R_Joint").positionSet += self.Vy * 0.01
 
         
             self.sendData()

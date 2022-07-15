@@ -2,35 +2,8 @@
 
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" >
 
-  <!--define robot base link-->
-  <link name="base_link">
-    <inertial>
-      <origin xyz="0.05 0.05 0.05" rpy="0 0 0"/>
-      <mass value="1"/>
-      <inertia ixx="0.00167"  ixy="0"  ixz="0" iyy="0.00167" iyz="0" izz="0.00167" />
-    </inertial>
-
-    <visual>
-      <origin xyz="0 0 0" rpy="0 0 0" />
-      <geometry>
-        <box size="0.1 0.1 0.1" />
-      </geometry>
-      <material name="Cyan">
-        <color rgba="0 1.0 1.0 1.0"/>
-      </material>
-    </visual>
-
-    <!-- <collision>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-      <geometry>
-        <box size="0.1 0.1 0.1" />
-      </geometry>
-    </collision> -->
-
-  </link>
-
   <!--left wheelLeg model-->
-  <xacro:macro name="LeftWheelLeg" params="name x y z">
+  <xacro:macro name="LeftWheelLeg" params="name x y z parent">
 
     <link name="${name}">
       <inertial>
@@ -77,7 +50,7 @@
         xyz="${x} ${y} ${z}"
         rpy="1.5708 -1.5708 3.1416" />
       <parent
-        link="base_link" />
+        link="${parent}" />
       <child
         link="${name}" />
       <axis
@@ -196,7 +169,7 @@
   </xacro:macro>
 
   <!--right wheelLeg model-->
-  <xacro:macro name="RightWheelLeg" params="name x y z">
+  <xacro:macro name="RightWheelLeg" params="name x y z parent">
 
     <link name="${name}">
       <inertial>
@@ -243,7 +216,7 @@
         xyz="${x} ${y} ${z}"
         rpy="1.5708 1.5708 0.0" />
       <parent
-        link="base_link" />
+        link="${parent}" />
       <child
         link="${name}" />
       <axis

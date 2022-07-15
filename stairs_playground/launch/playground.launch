@@ -13,7 +13,7 @@
 
   <include file="$(find stairs_playground)/launch/spawn_stairs_playground.launch">
     <arg name="initial_x" value = "2"/>
-    <arg name="initial_y" value = "0"/>
+    <arg name="initial_y" value = "-1"/>
     <arg name="stair_length" value="2"/>
 
     <arg name="initial_height" default ="0.01" />
