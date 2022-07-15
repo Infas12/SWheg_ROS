@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="WheelLegSegway">
+
+  <!--load model definations-->
+  <xacro:include filename="$(find wheelleg_description)/urdf/WheelLeg.xacro"/>
+
+  <!--load gazebo specific configuration-->
+  <xacro:include filename="$(find wheelleg_description)/urdf/WheelLeg.gazebo"/>
+
+
+  <!--load control interface for robot-->
+  <gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+      <robotNamespace>/WheelLegSegway</robotNamespace>
+    </plugin>
+  </gazebo>
+
+
+  <!--define joints-->
+  <xacro:LeftWheelLeg name="L" x="0" y="0.2" z="0.0" />
+  <xacro:RightWheelLeg name="R" x="0" y="-0.2" z="0.0" />
+
+
+  <!--add gazebo joint configures-->
+  <xacro:wheelLegJointConfig name="L" />
+  <xacro:wheelLegJointConfig name="R" />
+
+
+
+</robot>

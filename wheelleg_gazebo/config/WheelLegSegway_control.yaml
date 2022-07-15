@@ -1,0 +1,54 @@
+WheelLegSegway:
+  
+  joints: [R,L]
+  
+  # Publish all joint states -----------------------------------
+  joint_state_controller:
+    type: joint_state_controller/JointStateController
+    publish_rate: 50  
+
+  # Velocity Controllers ---------------------------------------
+  R_Joint_velocity_controller:
+    type: effort_controllers/JointVelocityController
+    joint: R_Joint
+    pid:   {p: 100.0, i: 0.1, d: 1, i_clamp_min: -50.0, i_clamp_max: 50.0}
+
+
+  L_Joint_velocity_controller:
+    type: effort_controllers/JointVelocityController
+    joint: L_Joint
+    pid:   {p: 100.0, i: 0.1, d: 1, i_clamp_min: -50.0, i_clamp_max: 50.0}
+
+
+
+  # Position Controllers ---------------------------------------
+  R_Joint_position_controller:
+    type: effort_controllers/JointPositionController
+    joint: R_Joint
+    pid:   {p: 10.0, i: 0.1, d: 1, i_clamp_min: -50.0, i_clamp_max: 50.0}
+
+  L_Joint_position_controller:
+    type: effort_controllers/JointPositionController
+    joint: L_Joint
+    pid:   {p: 10.0, i: 0.1, d: 1, i_clamp_min: -50.0, i_clamp_max: 50.0}
+
+  ## fake joints
+  LRA_Joint_position_controller:
+    type: velocity_controllers/JointPositionController
+    joint: LRA_Joint
+    pid:   {p: 10.0, i: 0.1, d: 0.1, i_clamp_min: -50.0, i_clamp_max: 50.0}
+    
+  LRB_Joint_position_controller:
+    type: velocity_controllers/JointPositionController
+    joint: LRB_Joint
+    pid:   {p: 10.0, i: 0.1, d: 0.1, i_clamp_min: -50.0, i_clamp_max: 50.0}
+    
+  RRB_Joint_position_controller:
+    type: velocity_controllers/JointPositionController
+    joint: RRB_Joint
+    pid:   {p: 10.0, i: 0.1, d: 0.1, i_clamp_min: -50.0, i_clamp_max: 50.0}
+
+  RRA_Joint_position_controller:
+    type: velocity_controllers/JointPositionController
+    joint: RRA_Joint
+    pid:   {p: 10.0, i: 0.1, d: 0.1, i_clamp_min: -50.0, i_clamp_max: 50.0}
