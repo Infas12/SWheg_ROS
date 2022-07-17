@@ -42,6 +42,7 @@ class TransitionState(RobotState):
             self.changePos[name] = (self.targetPos[name] - self.initialPos[name]) % (2.0*3.14159)  # calculate the change of angle of this motor ([-pi to pi])
             if(self.changePos[name]>3.14159):
                 self.changePos[name] = self.changePos[name] - 2.0*3.14159
+                
         # clean-up all data
         self.tramsformCompleted = False 
         self.tick = 0

@@ -20,7 +20,6 @@ class LegState(RobotState):
         self.Vw = 0.0
         
         self.transformDuration = 1000
-        self.relaxTick         = 0
         
         self.initialPos = {} # initial pos of motors when entering the state
         self.targetPos = {
@@ -40,7 +39,6 @@ class LegState(RobotState):
         self.Initialized     = False
         self.trajectoryTick  = 0
         self.tick            = 0
-        self.relaxTick       = 0
         r = rospy.Rate(1000)
         
         
