@@ -12,7 +12,7 @@ if __name__ == '__main__':
     sm = smach.StateMachine(outcomes=['exit'])
     with sm:
         # smach.StateMachine.add('WHEEL',WheelState(),
-        #                        transitions={'Transform':'exit'})
+        #                        transitions={'Transform':'TRANSITION'})
         # smach.StateMachine.add('TRANSITION',TransitionState(),
         #                        transitions={'TransformCompleted':'LEG'})
         # smach.StateMachine.add('LEG',LegState(),
