@@ -20,12 +20,31 @@ class LegState(RobotState):
         
         self.transformDuration = 1000
         self.initialPos = {} # initial pos of motors when entering the state
-        self.targetPos = {
-            "LF_Joint" :  -self.generate_position(self.period,1200,15000),
-            "LB_Joint" :  -self.generate_position(self.period,1200,15000 + int(0.5*self.period)),
-            "RF_Joint" :   self.generate_position(self.period,1200,15000),
-            "RB_Joint" :   self.generate_position(self.period,1200,15000 + int(0.5*self.period))
-        }
+        
+        self.mode = "trot" # "stairs" ,"walk", "trot"
+        
+        if self.mode == "walk":
+            self.targetPos = {
+                "LF_Joint" :  -self.generate_position(self.period,1200,15000),
+                "LB_Joint" :  -self.generate_position(self.period,1200,15000 + int(0.25*self.period)),
+                "RF_Joint" :   self.generate_position(self.period,1200,15000 + int(0.75*self.period)),
+                "RB_Joint" :   self.generate_position(self.period,1200,15000 + int(0.5*self.period))
+            }
+        elif self.mode == "stairs":
+            self.targetPos = {
+                "LF_Joint" :  self.generate_position_stairs(self.period,15000),
+                "LB_Joint" :  self.generate_position_stairs(self.period,15000 + int(0.5*self.period)),
+                "RF_Joint" :  -self.generate_position_stairs(self.period,15000),
+                "RB_Joint" :  -self.generate_position_stairs(self.period,15000 + int(0.5*self.period))
+            }
+        elif self.mode == "trot":
+            self.targetPos = {
+                "LF_Joint" :  -self.generate_position(self.period,1200,15000),
+                "LB_Joint" :  -self.generate_position(self.period,1200,15000 + int(0.5*self.period)),
+                "RF_Joint" :   self.generate_position(self.period,1200,15000 + int(0.5*self.period)),
+                "RB_Joint" :   self.generate_position(self.period,1200,15000)
+            }
+        
         self.changePos = {}
     
     def execute(self, userdata):
@@ -56,30 +75,32 @@ class LegState(RobotState):
                     motor.positionSet = self.initialPos[name] + alpha*self.changePos[name]
             else:
                 if self.joyData is not None:
-                    self.Vw = 70.0 * self.joyData.axes[0]  
+                    self.Vw = 200.0 * self.joyData.axes[0]  
                     self.Vy = 2.0 * self.joyData.axes[1]
                     self.Vy = min(1,self.Vy)
                     self.Vy = max(-1,self.Vy)
                 
                 self.trajectorytick += 1.0*self.Vy
-                print(self.Vy,self.trajectorytick)
                 
                 ## trot
-                # MotorManager.instance().getMotor("LF_Joint").positionSet = -self.generate_position(self.period,1000+self.Vw,self.tick)
-                # MotorManager.instance().getMotor("LB_Joint").positionSet = -self.generate_position(self.period,1000+self.Vw,self.tick + int(0.5*self.period))
-                # MotorManager.instance().getMotor("RF_Joint").positionSet =  self.generate_position(self.period,1000-self.Vw,self.tick + int(0.5*self.period))
-                # MotorManager.instance().getMotor("RB_Joint").positionSet =  self.generate_position(self.period,1000-self.Vw,self.tick)            
-
-
-                ## walk
-                MotorManager.instance().getMotor("LF_Joint").positionSet = -self.generate_position(self.period,1200+self.Vw,self.trajectorytick)
-                MotorManager.instance().getMotor("LB_Joint").positionSet = -self.generate_position(self.period,1200+self.Vw,self.trajectorytick + int(0.5*self.period))
-                MotorManager.instance().getMotor("RF_Joint").positionSet =  self.generate_position(self.period,1200-self.Vw,self.trajectorytick)
-                MotorManager.instance().getMotor("RB_Joint").positionSet =  self.generate_position(self.period,1200-self.Vw,self.trajectorytick + int(0.5*self.period))            
-
-                ## stairs v2
-                
-                
+        
+                if self.mode == "walk":
+                    ## walk
+                    MotorManager.instance().getMotor("LF_Joint").positionSet = -self.generate_position(self.period,1200+self.Vw,self.trajectorytick)
+                    MotorManager.instance().getMotor("LB_Joint").positionSet = -self.generate_position(self.period,1200+self.Vw,self.trajectorytick + int(0.25*self.period))
+                    MotorManager.instance().getMotor("RF_Joint").positionSet =  self.generate_position(self.period,1200-self.Vw,self.trajectorytick + int(0.75*self.period))
+                    MotorManager.instance().getMotor("RB_Joint").positionSet =  self.generate_position(self.period,1200-self.Vw,self.trajectorytick + int(0.5*self.period))            
+                if self.mode == "stairs":
+                    ## stairs
+                    MotorManager.instance().getMotor("LF_Joint").positionSet = self.generate_position_stairs(self.period,self.trajectorytick)
+                    MotorManager.instance().getMotor("LB_Joint").positionSet = self.generate_position_stairs(self.period,self.trajectorytick + int(0.5*self.period))
+                    MotorManager.instance().getMotor("RF_Joint").positionSet = -self.generate_position_stairs(self.period,self.trajectorytick)
+                    MotorManager.instance().getMotor("RB_Joint").positionSet = -self.generate_position_stairs(self.period,self.trajectorytick + int(0.5*self.period))            
+                if self.mode == "trot":
+                    MotorManager.instance().getMotor("LF_Joint").positionSet = -self.generate_position(self.period,1200+self.Vw,self.trajectorytick)
+                    MotorManager.instance().getMotor("LB_Joint").positionSet = -self.generate_position(self.period,1200+self.Vw,self.trajectorytick + int(0.5*self.period))
+                    MotorManager.instance().getMotor("RF_Joint").positionSet =  self.generate_position(self.period,1200-self.Vw,self.trajectorytick + int(0.5*self.period))
+                    MotorManager.instance().getMotor("RB_Joint").positionSet =  self.generate_position(self.period,1200-self.Vw,self.trajectorytick)    
         
             self.sendData()
             
@@ -114,6 +135,23 @@ class LegState(RobotState):
         else :
             angle_in_one_period = theta_hit + (x - t_hit) * k_stance
         
+        y = 0
+        
+        if turns % 2 == 0: #even
+            y = angle_in_one_period
+        else: #odd
+            y =  PI + angle_in_one_period
+         
+        return y
+    
+    def generate_position_stairs(self,period,timestamp):
+
+        PI = 3.1415926
+
+        turns = int(timestamp / period)
+        x     = float(timestamp % period)
+        k = float(PI/period)
+        angle_in_one_period = float(k * x)
         y = 0
         
         if turns % 2 == 0: #even
