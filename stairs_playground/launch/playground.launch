@@ -1,6 +1,9 @@
 <launch>
 
   <!--empty world-->
+
+  <arg name="stair_length" default="0.3"/>
+
   <include
     file="$(find wheelleg_gazebo)/launch/empty_world.launch" >
     <arg name="verbose" value="true" />
@@ -8,18 +11,16 @@
     <arg name="world_name" value="$(find stairs_playground)/world/empty.world"/>
   </include>
 
-
   <!--setup playground-->
 
-  <include file="$(find stairs_playground)/launch/spawn_stairs_playground.launch">
+  <!-- <include file="$(find stairs_playground)/launch/spawn_stairs_playground.launch">
     <arg name="initial_x" value = "2"/>
-    <arg name="initial_y" value = "-1"/>
-    <arg name="stair_length" value="2"/>
-
-    <arg name="initial_height" default ="0.01" />
-    <arg name="increment_height" default="0.01"/>
-    <arg name="num_envs" value="25"/>
-  </include>
+    <arg name="initial_y" value = "1"/>
+    <arg name="stair_length" value="$(eval arg('stair_length'))"/>
+    <arg name="initial_height" value ="0.01" />
+    <arg name="increment_height" value="0.01"/>
+    <arg name="num_envs" value="15"/>
+  </include> -->
 
   <!-- <include file="$(find stairs_playground)/launch/spawn_stairs_playground.launch">
     <arg name="num_envs" value="10"/>

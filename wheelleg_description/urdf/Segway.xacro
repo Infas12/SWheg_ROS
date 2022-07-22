@@ -48,7 +48,7 @@
     <parent link="static_base"/>
     <child link="z_dummy_link"/>
     <limit effort="30" velocity="100.0" lower="-200" upper="200" />
-    <axis xyz="0 0 1"/>\
+    <axis xyz="0 0 1"/>
   </joint>
 
   <link name="z_dummy_link">

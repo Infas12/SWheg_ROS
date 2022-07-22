@@ -5,7 +5,7 @@
     <xacro:macro name="stairs" params="stairs xpos ypos zpos stair_length stair_width stair_height">
 
         <joint name="stair_joint_origin_${stairs}" type="fixed">
-            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <origin rpy="0 0 -1.570795" xyz="0 0 0"/>
             <parent link="base_link"/>
             <child link="stair_link_${stairs}"/>
         </joint>

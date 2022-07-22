@@ -10,12 +10,13 @@ from RobotState import RobotState, ContorlMode
 class LegState(RobotState):
     
     def __init__(self):
-        RobotState.__init__(self, outcomes=["Transform"])
+        RobotState.__init__(self, outcomes=["Wheel","Stairs","Exit"])
         self.motorControlMode = ContorlMode.POS_MODE
         self.IsLeggedMode = True 
-        self.trajectoryTick = 0
+        
         self.tick = 0
         self.period = 1500 # gait cycle
+        self.trajectoryTick = 10*self.period
         self.Vy = 0.0
         self.Vw = 0.0
         
@@ -37,10 +38,13 @@ class LegState(RobotState):
         
         self.stateChangeFlag = False
         self.Initialized     = False
-        self.trajectoryTick  = 0
+        self.trajectoryTick  = 10*self.period
         self.tick            = 0
         r = rospy.Rate(1000)
-        
+        self.Apressed = False
+        self.Bpressed = False
+        self.Xpressed = False
+        self.Ypressed = False     
         
         ## initialize to leg state canonical form
         for name in self.motorNameList:
@@ -81,12 +85,19 @@ class LegState(RobotState):
                 MotorManager.instance().getMotor("RM_Joint").positionSet =  self.generate_position(self.period,1000-self.Vw,self.trajectoryTick + 0.5*self.period)
                 MotorManager.instance().getMotor("RB_Joint").positionSet =  self.generate_position(self.period,1000-self.Vw,self.trajectoryTick)            
             
+            if(self.Apressed):
+                return "Wheel"        
+        
+            if(self.Xpressed):
+                return "Stairs"            
             
+            if(self.Ypressed):
+                return "Exit"  
             
             self.sendData()            
             r.sleep()
         
-        return "Transform"
+
     
     
     def generate_position(self,period,time_stance,timestamp):

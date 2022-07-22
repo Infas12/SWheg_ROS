@@ -1,13 +1,17 @@
 <launch>
 
-  <include file="$(find stairs_playground)/launch/playground.launch" />
+  <arg name="stair_length" default="0.3"/>
+
+  <include file="$(find stairs_playground)/launch/playground.launch">
+    <arg name="stair_length" value="$(eval arg('stair_length'))"/>
+  </include>
 
   <node
     name="tf_footprint_base"
     pkg="tf"
     type="static_transform_publisher"
     args="0 0 0 0 0 0 base_link base_footprint 40" />
-  
+
   <param 
     name="robot_description" 
     command="$(find xacro)/xacro $(find wheelleg_description)/urdf/Segway.xacro" />
@@ -64,6 +68,11 @@
       args="--stopped  
       R_Joint_position_controller
       L_Joint_position_controller"/>
+
+      <node
+        name="controller"
+        pkg ="wheelleg_segway_control"
+        type="SmachTest.py"/>
 
 
 </launch>

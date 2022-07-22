@@ -7,7 +7,7 @@
   <arg name="increment_height" default="0.01"/>
 
   <arg name="stair_length" default="0.3"/>
-  <arg name="stair_width" default="1"/>
+  <arg name="stair_width" default="2"/>
 
   <arg name="initial_x" default="0"/>
   <arg name="initial_y" default="0"/>
@@ -15,7 +15,6 @@
 
   <group ns="$(eval 'stairs_env_' + 'id' + str(arg('num_envs')) + 'length' + str(arg('stair_length')))">
 
-    
     <arg name="pos_x" value = "$(eval arg('initial_x') + 2.0 * float(arg('num_envs')))"/>
     <arg name="pos_y" value = "$(eval float(arg('initial_y')))"/>
 
@@ -24,7 +23,7 @@
 
     <param 
       name="$(arg model_name)" 
-      command="$(find xacro)/xacro $(find stairs_playground)/urdf/stairs.xacro stair_num:=1 stair_width:=$(arg stair_width) stair_height:=$(arg stair_height) stair_length:=$(arg stair_length)" />
+      command="$(find xacro)/xacro $(find stairs_playground)/urdf/stairs.xacro stair_num:=5 stair_width:=$(arg stair_width) stair_height:=$(arg stair_height) stair_length:=$(arg stair_length)" />
 
     <node
       name="spawn_model"
@@ -44,7 +43,6 @@
     <arg name="initial_height" default ="$(arg initial_height)"/>
     <arg name="increment_height" default="$(arg increment_height)"/>
     <arg name="stair_width" default="$(arg stair_width)"/>
-
 
   </include>
 
