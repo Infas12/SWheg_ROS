@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>wheelleg_quadraped_dev</name>
+  <name>wheelleg_quadraped_control</name>
   <version>0.0.0</version>
   <description>The wheelleg_control package</description>
 

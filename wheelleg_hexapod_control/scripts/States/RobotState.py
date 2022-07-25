@@ -27,7 +27,11 @@ class RobotState(smach.State):
         self.joySub   = rospy.Subscriber('joy',Joy,self.JoystickCallback)
         self.joyData  = None
         
-        self.stateChangeFlag = False
+        self.Apressed = False
+        self.Bpressed = False
+        self.Xpressed = False
+        self.Ypressed = False
+        
     
     def execute(self, userdata):
         ROS_INFO("'execute' method must be overridden")
@@ -47,8 +51,25 @@ class RobotState(smach.State):
         self.jointPub.publish(msg)
     
     def JoystickCallback(self,data):
+        
+        if(data.buttons[0]==1 and 
+        (self.joyData is None or self.joyData.buttons[0]!=1) 
+        ): 
+            self.Apressed = True 
+        
         if(data.buttons[1]==1 and 
         (self.joyData is None or self.joyData.buttons[1]!=1) # compare current joystick data with previous data
         ): 
-            self.stateChangeFlag = True # Change state when B is pressed
+            self.Bpressed = True
+        
+        if(data.buttons[2]==1 and 
+        (self.joyData is None or self.joyData.buttons[2]!=1) # compare current joystick data with previous data
+        ): 
+            self.Xpressed = True
+            
+        if(data.buttons[3]==1 and 
+        (self.joyData is None or self.joyData.buttons[3]!=1) # compare current joystick data with previous data
+        ): 
+            self.Ypressed = True           
+            
         self.joyData = data # collect joystick data
