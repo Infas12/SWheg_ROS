@@ -29,8 +29,8 @@ class WheelState(RobotState):
         while(True):
 
             if self.joyData is not None:
-                self.Vw = 25.0 * self.joyData.axes[0]
-                self.Vy = 25.0 * self.joyData.axes[1]
+                self.Vw = 5.0 * self.joyData.axes[0]
+                self.Vy = 10.0 * self.joyData.axes[1]
             
             MotorManager.instance().getMotor("LF_Joint").speedSet = (self.Vy-self.Vw)*1.0
             MotorManager.instance().getMotor("LM_Joint").speedSet = (self.Vy-self.Vw)*1.0
