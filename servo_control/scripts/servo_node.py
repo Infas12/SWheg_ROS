@@ -15,9 +15,9 @@ def JoystickCallback(data):
 
     if(data.buttons[4]==1): #LB
         if(data.buttons[2]==1):#x 顺时针
-            target_speed = 300
+            target_speed = 500
         elif(data.buttons[3]==1):#y 逆时针
-            target_speed = 32768 + 300
+            target_speed = 32768 + 500
         else:
             target_speed = 0
     else:

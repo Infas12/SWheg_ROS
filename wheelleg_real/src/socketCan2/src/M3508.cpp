@@ -5,10 +5,17 @@
 #include <math.h>
 #define PI acos(-1)
 
-const float M3508::RawPos2Rad = 0.000039945617936054835f;  /* 2Pi / 8191 / (3591/187) / (22/22)   */
-const float M3508::RawRpm2Rps = 0.005453242608570419f;    /* 2Pi / 60 / (3591/187) / (22/22)   */
-const float M3508::PiDiv19 = 0.1635972782571126f;      /* PI / (3591/187) / (22/22)  */
+// tendon version
+const float M3508::RawPos2Rad = 0.000025847164546859f;  /* 2Pi / 8191 / (3591/187) / (34/22)   */
+const float M3508::RawRpm2Rps = 0.00352856874672204f;    /* 2Pi / 60 / (3591/187) / (34/22)   */
+const float M3508::PiDiv19 = 0.105857062401661f;      /* PI / (3591/187) / (34/22)  */
 const float M3508::CurrentRatio = 0.00122070312;      /* 20/16384  */
+
+// // linear actuator
+// const float M3508::RawPos2Rad = 0.000039945617936054835f;  /* 2Pi / 8191 / (3591/187) / (22/22)   */
+// const float M3508::RawRpm2Rps = 0.005453242608570419f;    /* 2Pi / 60 / (3591/187) / (22/22)   */
+// const float M3508::PiDiv19 = 0.1635972782571126f;      /* PI / (3591/187) / (22/22)  */
+// const float M3508::CurrentRatio = 0.00122070312;      /* 20/16384  */
 
 void M3508::HandleNewMsg(can_frame msg)
 {
