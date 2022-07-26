@@ -9,7 +9,6 @@
 #include <sensor_msgs/JointState.h>
 #include <fstream>
 
-
 #define MOTOR_NUM 6
 M3508 ChassisMotor[MOTOR_NUM];
 std::string chassisMotorName[MOTOR_NUM] = {"LF_Joint","LM_Joint","LB_Joint","RB_Joint","RM_Joint","RF_Joint"};

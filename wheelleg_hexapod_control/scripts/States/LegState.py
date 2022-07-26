@@ -68,8 +68,8 @@ class LegState(RobotState):
             else:
                 # handle joystick command
                 if self.joyData is not None:
-                    self.Vw = 700.0 * self.joyData.axes[0]  
-                    self.Vy = 1.0 * self.joyData.axes[1]
+                    self.Vw = 0.0 * self.joyData.axes[0]  
+                    self.Vy = 2.0 * self.joyData.axes[1]
                     self.Vy = min(3,self.Vy)
                     self.Vy = max(-3,self.Vy) 
                     
