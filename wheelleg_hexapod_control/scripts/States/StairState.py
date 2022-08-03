@@ -24,11 +24,11 @@ class StairState(RobotState):
         self.initialPos = {} # initial pos of motors when entering the state
         self.targetPos = {
             "LF_Joint" : self.generate_position_stairs(self.period,self.trajectoryTick),
-            "LM_Joint" : self.generate_position_stairs(self.period,self.trajectoryTick), #  + 0.33*self.period),
-            "LB_Joint" : self.generate_position_stairs(self.period,self.trajectoryTick), # + 0.66*self.period),
+            "LM_Joint" : self.generate_position_stairs(self.period,self.trajectoryTick + 0.33*self.period),
+            "LB_Joint" : self.generate_position_stairs(self.period,self.trajectoryTick + 0.66*self.period),
             "RF_Joint" : -self.generate_position_stairs(self.period,self.trajectoryTick),
-            "RM_Joint" : -self.generate_position_stairs(self.period,self.trajectoryTick), # + 0.33*self.period),
-            "RB_Joint" : -self.generate_position_stairs(self.period,self.trajectoryTick) # + 0.66*self.period)
+            "RM_Joint" : -self.generate_position_stairs(self.period,self.trajectoryTick + 0.33*self.period),
+            "RB_Joint" : -self.generate_position_stairs(self.period,self.trajectoryTick + 0.66*self.period)
         }
         self.changePos = {}
         
@@ -38,6 +38,7 @@ class StairState(RobotState):
         self.stateChangeFlag = False
         self.Initialized     = False
         self.trajectoryTick  = 10 * self.period
+        self.trajectoryTickM  = 10 * self.period
         self.tick            = 0
         r = rospy.Rate(1000)
         self.Apressed = False
@@ -68,21 +69,24 @@ class StairState(RobotState):
             else:
                 # handle joystick command
                 if self.joyData is not None:
-                    self.Vw = 0.0 * self.joyData.axes[0]  
-                    self.Vy = 4.0 * self.joyData.axes[1]
-                    self.Vy = min(4,self.Vy)
-                    self.Vy = max(-4,self.Vy) 
+                    self.Vw = 500.0 * self.joyData.axes[0]  
+                    self.Vy = 2.0 * self.joyData.axes[1]
+                    self.Vt = 2.0 * self.joyData.axes[4]
+                    # self.Vy = 3.0 * self.joyData.axes[1] + 2*self.joyData.axes[4]
+                    self.Vy = min(4.5,self.Vy)
+                    self.Vy = max(-4.5,self.Vy) 
                     
                 # the trajectory is clock-driven.
                 self.trajectoryTick += self.Vy * 1.0
+                self.trajectoryTickM += self.Vt * 1.0
                 
                 # set position
                 MotorManager.instance().getMotor("LF_Joint").positionSet = self.generate_position_stairs(self.period,self.trajectoryTick)
-                MotorManager.instance().getMotor("LM_Joint").positionSet = self.generate_position_stairs(self.period,self.trajectoryTick) # + 0.33*self.period)
-                MotorManager.instance().getMotor("LB_Joint").positionSet = self.generate_position_stairs(self.period,self.trajectoryTick) # + 0.66*self.period)
+                MotorManager.instance().getMotor("LM_Joint").positionSet = self.generate_position_stairs(self.period,self.trajectoryTick + self.trajectoryTickM + 0.33*self.period)
+                MotorManager.instance().getMotor("LB_Joint").positionSet = self.generate_position_stairs(self.period,self.trajectoryTick + 0.66*self.period)
                 MotorManager.instance().getMotor("RF_Joint").positionSet = -self.generate_position_stairs(self.period,self.trajectoryTick)
-                MotorManager.instance().getMotor("RM_Joint").positionSet = -self.generate_position_stairs(self.period,self.trajectoryTick) # + 0.33*self.period)
-                MotorManager.instance().getMotor("RB_Joint").positionSet = -self.generate_position_stairs(self.period,self.trajectoryTick) # + 0.66*self.period)            
+                MotorManager.instance().getMotor("RM_Joint").positionSet = -self.generate_position_stairs(self.period,self.trajectoryTick + self.trajectoryTickM + 0.33*self.period)
+                MotorManager.instance().getMotor("RB_Joint").positionSet = -self.generate_position_stairs(self.period,self.trajectoryTick + 0.66*self.period)            
             
             if(self.Apressed):
                 return "Wheel"        

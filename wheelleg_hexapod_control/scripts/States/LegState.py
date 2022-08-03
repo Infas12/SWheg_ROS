@@ -69,9 +69,10 @@ class LegState(RobotState):
                 # handle joystick command
                 if self.joyData is not None:
                     self.Vw = 0.0 * self.joyData.axes[0]  
-                    self.Vy = 2.0 * self.joyData.axes[1]
-                    self.Vy = min(3,self.Vy)
-                    self.Vy = max(-3,self.Vy) 
+                    # self.Vy = 2.0 * self.joyData.axes[1]
+                    self.Vy = 2.0 * self.joyData.axes[1] + 2.0*self.joyData.axes[4]
+                    self.Vy = min(4.5,self.Vy)
+                    self.Vy = max(-4.5,self.Vy) 
                     
                 # the trajectory is clock-driven.
                 self.trajectoryTick += self.Vy * 1.0

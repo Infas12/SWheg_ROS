@@ -3,7 +3,7 @@
 
     <!-- <node pkg="servo_control" type="servo_node.py" name="servo_control" ></node> -->
 
-    <node pkg="wheelleg_real" type="motorController" name="motorController" output="screen"></node>
+    <!-- <node pkg="wheelleg_real" type="motorController" name="motorController"></node> -->
     <!-- <node pkg="wheelleg_quadraped_control" type="SmachTest.py" name="SmachTest" ></node> -->
 
 </launch>

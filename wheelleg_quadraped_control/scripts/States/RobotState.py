@@ -15,7 +15,7 @@ class RobotState(smach.State):
         
         smach.State.__init__(self, outcomes=outcomes)
         
-        self.motorNameList = ["RF_Joint","LF_Joint","LB_Joint","RB_Joint"]
+        self.motorNameList = ["LF_Joint","LB_Joint","RB_Joint","RF_Joint"]
         
         for name in self.motorNameList:
             Motor(name)
