@@ -89,7 +89,7 @@ class PowerSensor:
         self.regnums = 8
         self.send_data = mmodbus03or04(self.slaveadd, self.startreg, self.regnums)
         # print("send data : ", send_data.hex())
-        self.com = serial.Serial("/dev/ttyUSB0", 115200, timeout=0.8)
+        self.com = serial.Serial("/dev/ttyUSB1", 115200, timeout=0.8)
         print("com open")
 
     def JoystickCallback(self,data): # power button

@@ -5,31 +5,42 @@ from servo import servo
 from scservo_sdk import *
 import numpy as np
 import sys
-target_position_1 = {"Open":3250,"Close":150}
-target_position_2 = {"Open":3500,"Close":500}
-target_speed = 0 # 32768
-
+target_speed1 = 0 # 32768
+target_speed2 = 0 # 32768
+speedTag = 400
 
 def JoystickCallback(data):
-    global target_speed
+    global target_speed1,target_speed2,speedTag
 
-    if(data.buttons[4]==1): #LB
-        if(data.buttons[2]==1):#x 顺时针
-            target_speed = 500
-        elif(data.buttons[3]==1):#y 逆时针
-            target_speed = 32768 + 500
+    if(data.axes[2]<0): #LT
+        if(data.buttons[4]==1):#LB 打开
+            target_speed1 = target_speed2 = speedTag
+        elif(data.buttons[5]==1):#RB 闭合
+            target_speed1 = target_speed2 = 32768 + speedTag
+        elif(data.axes[6]==1):#lr 后轮
+            target_speed2 = speedTag
+            target_speed1 = 0
+        elif(data.axes[6]==-1):#lr 后轮
+            target_speed2 = 32768 + speedTag
+            target_speed1 = 0
+        elif(data.axes[7]==1):#ud 前轮
+            target_speed2 = 0
+            target_speed1 = speedTag
+        elif(data.axes[7]==-1):#ud 前轮
+            target_speed2 = 0
+            target_speed1 = 32768 + speedTag
         else:
-            target_speed = 0
+            target_speed1 = target_speed2 = 0
     else:
-        target_speed = 0
+        target_speed1 = target_speed2 = 0
 
         
 
 def servo_control():
-    global target_speed
+    global target_speed1,target_speed2
 
     # Serial Setup
-    BAUDRATE                    = 500000           
+    BAUDRATE                    = 115200           
     DEVICENAME                  = '/dev/ttyUSB0'   
     protocol_end                = 0           # SCServo bit end(STS/SMS=0, SCS=1)
 
@@ -37,8 +48,8 @@ def servo_control():
     packetHandler = PacketHandler(protocol_end)
     portHandler.openPort()
     portHandler.setBaudRate(BAUDRATE)
-    servo1 = servo(1,packetHandler,portHandler)
-    servo2 = servo(2,packetHandler,portHandler)
+    servo1 = servo(2,packetHandler,portHandler)
+    servo2 = servo(3,packetHandler,portHandler)
 
     sub = rospy.Subscriber('joy',Joy,JoystickCallback)
     rospy.init_node('servo_controller', anonymous=True)
@@ -46,8 +57,8 @@ def servo_control():
 
      
     while not rospy.is_shutdown():
-        servo1.set_target_speed(target_speed)
-        servo2.set_target_speed(target_speed)
+        servo1.set_target_speed(target_speed1)
+        servo2.set_target_speed(target_speed2)
         servo1.update()
         servo2.update()
         rate.sleep()                          

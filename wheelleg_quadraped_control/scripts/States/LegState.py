@@ -21,7 +21,7 @@ class LegState(RobotState):
         self.transformDuration = 1000
         self.initialPos = {} # initial pos of motors when entering the state
         
-        self.mode = "stairs" # "stairs" ,"walk", "trot"
+        self.mode = "walk" # "stairs" ,"walk", "trot"
         
         if self.mode == "walk":
             self.targetPos = {
@@ -76,9 +76,10 @@ class LegState(RobotState):
             else:
                 if self.joyData is not None:
                     self.Vw = 0.0 * self.joyData.axes[0]  
-                    self.Vy = 3.0 * self.joyData.axes[1]
-                    self.Vy = min(3,self.Vy)
-                    self.Vy = max(-3,self.Vy)
+                    # self.Vy = 3.0 * self.joyData.axes[1]
+                    self.Vy = 2.0 * self.joyData.axes[1] + 3.5*self.joyData.axes[4]
+                    self.Vy = min(4,self.Vy)
+                    self.Vy = max(-4,self.Vy)
                 
                 self.trajectorytick += 1.0*self.Vy
                 
