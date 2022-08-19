@@ -20,36 +20,55 @@ class TransformJointController:
         wheelJointNameList = rospy.get_param('/' + robotName + '/joints')
         
         # get rim joint name
-        self.rim_joint_name_list = []
+        self.rim_joint_A_name_list = []
+        self.rim_joint_B_name_list = []
         for joint in wheelJointNameList:
-            self.rim_joint_name_list.append(joint+"RA")
-            self.rim_joint_name_list.append(joint+"RB")
+            self.rim_joint_A_name_list.append(joint+"RA")
+            self.rim_joint_B_name_list.append(joint+"RB")
         
         # spawn rim joint controller publishers
-        self.transformer_joint_publisher_list = []
-        for name in self.rim_joint_name_list:
-            self.transformer_joint_publisher_list.append(
+        self.transformer_joint_A_publisher_list = []
+        self.transformer_joint_B_publisher_list = []
+        for name in self.rim_joint_A_name_list:
+            self.transformer_joint_A_publisher_list.append(
+                rospy.Publisher('/' + robotName + '/' + name +'_Joint_position_controller/command',
+                                Float64,
+                                queue_size=10)
+            )
+            
+        for name in self.rim_joint_B_name_list:
+            self.transformer_joint_B_publisher_list.append(
                 rospy.Publisher('/' + robotName + '/' + name +'_Joint_position_controller/command',
                                 Float64,
                                 queue_size=10)
             )
         
         # set joint mode
-        self.isLegged = False
-        self.joint_angle = 0.0
+        self.mode = 0
+        self.joint_angle_A = 0.0
+        self.joint_angle_B = 0.0
         
         # register at joint controller manager
         JointControllerManager.instance().controllerList.append(self)
         
     def SendCommand(self):
         
-        if self.isLegged :
-            self.joint_angle = -0.5
-        else :
-            self.joint_angle = -0.0
+        if self.mode == 0:            # Wheel mode
+            self.joint_angle_A = -0.0
+            self.joint_angle_B = -0.0
+        elif self.mode == 1:          # SWheg mode
+            self.joint_angle_A = -0.5
+            self.joint_angle_B = -0.5
+        elif self.mode == 2:          # Rhex mode
+            self.joint_angle_A = -0.5
+            self.joint_angle_B = -0.05
+            
         
-        for pub in self.transformer_joint_publisher_list:
-            pub.publish(self.joint_angle)
+        for pub in self.transformer_joint_A_publisher_list:
+            pub.publish(self.joint_angle_A)
+        
+        for pub in self.transformer_joint_B_publisher_list:
+            pub.publish(self.joint_angle_B)        
 
 class WheelJointController:
     

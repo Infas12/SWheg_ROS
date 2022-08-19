@@ -12,7 +12,7 @@ class TransitionState(RobotState):
         
         self.motorControlMode = ContorlMode.POS_MODE # In transition state we'll control position
         
-        self.IsLeggedMode = False # remain wheel mode
+        self.Mode = 0 # remain wheel mode
                 
         self.initialPos = {} # initial pos of motors when entering the state
         

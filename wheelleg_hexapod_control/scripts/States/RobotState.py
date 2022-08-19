@@ -21,7 +21,7 @@ class RobotState(smach.State):
             Motor(name)
         
         self.motorControlMode = ContorlMode.SPD_MODE
-        self.IsLeggedMode = False
+        self.Mode = 0
         
         self.jointPub = rospy.Publisher('/WheelLegHexapod/command',WheelLegControlMsg,queue_size=10)
         self.joySub   = rospy.Subscriber('joy',Joy,self.JoystickCallback)
@@ -39,7 +39,7 @@ class RobotState(smach.State):
 
     def sendData(self): # send joint commands
         msg = WheelLegControlMsg()
-        msg.IsLeggedMode = self.IsLeggedMode            
+        msg.Mode = self.Mode            
         for motorName in self.motorNameList:
             motor = MotorManager.instance().getMotor(motorName) # get motor from motormanager
             msg.JointName.append(motorName)

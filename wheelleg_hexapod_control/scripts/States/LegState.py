@@ -12,7 +12,7 @@ class LegState(RobotState):
     def __init__(self):
         RobotState.__init__(self, outcomes=["Wheel","Stairs","Exit"])
         self.motorControlMode = ContorlMode.POS_MODE
-        self.IsLeggedMode = True 
+        self.Mode = 1 
         
         self.tick = 0
         self.period = 1500 # gait cycle

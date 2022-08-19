@@ -1,4 +1,4 @@
-bool       IsLeggedMode
-string[]     JointName
+int16      Mode
+string[]   JointName
 bool[]     JointMode
 float32[]  JointData

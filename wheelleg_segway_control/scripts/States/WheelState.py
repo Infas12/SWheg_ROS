@@ -9,7 +9,7 @@ class WheelState(RobotState):
     def __init__(self):
         RobotState.__init__(self, outcomes=["Transform"])
         self.motorControlMode = ContorlMode.SPD_MODE
-        self.IsLeggedMode = False #wheel mode
+        self.Mode = 0 #wheel mode
         self.Vy = 0.0
         self.Vw = 0.0
         
