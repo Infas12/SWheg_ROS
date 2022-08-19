@@ -8,7 +8,7 @@
     args="0 0 0 0 0 0 base_link base_footprint 40" />
   <param 
     name="robot_description" 
-    command="$(find xacro)/xacro.py --inorder $(find wheelleg_description)/urdf/Quadraped.xacro" />
+    command="$(find xacro)/xacro.py --inorder $(find wheelleg_description)/urdf/Segway.xacro" />
   <node
     name="joint_state_publisher_gui"
     pkg="joint_state_publisher_gui"

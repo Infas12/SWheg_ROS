@@ -7,7 +7,7 @@ from RobotState import RobotState, ContorlMode
 class WheelState(RobotState):
     
     def __init__(self):
-        RobotState.__init__(self, outcomes=["Transform"])
+        RobotState.__init__(self, outcomes=["Leg","Stairs","Exit"])
         self.motorControlMode = ContorlMode.SPD_MODE
         self.IsLeggedMode = False #wheel mode
         self.Vy = 0.0
@@ -18,13 +18,15 @@ class WheelState(RobotState):
         r = rospy.Rate(100)
         
         # clean-up all data
-        self.stateChangeFlag = False #gonna fix this.
+        self.Apressed = False
+        self.Bpressed = False
+        self.Xpressed = False
+        self.Ypressed = False
         self.Vy = 0.0
         self.Vw = 0.0
         
-        print(self.Vy)
 
-        while(not self.stateChangeFlag):
+        while(True):
 
             if self.joyData is not None:
                 self.Vw = 25.0 * self.joyData.axes[0]
@@ -36,10 +38,18 @@ class WheelState(RobotState):
             MotorManager.instance().getMotor("RF_Joint").speedSet = (self.Vy+self.Vw)*-1.0
             MotorManager.instance().getMotor("RM_Joint").speedSet = (self.Vy+self.Vw)*-1.0
             MotorManager.instance().getMotor("RB_Joint").speedSet = (self.Vy+self.Vw)*-1.0                        
+
+            if(self.Bpressed):
+                return "Leg"        
         
+            if(self.Xpressed):
+                return "Stairs"
+            
+            if(self.Ypressed):
+                return "Exit"  
+                      
             self.sendData()
             
             r.sleep()
-        
-        return "Transform"
-    
+            
+            

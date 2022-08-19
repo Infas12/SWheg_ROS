@@ -1,16 +1,20 @@
 <launch>
 
-  <include file="$(find stairs_playground)/launch/playground.launch" />
+  <arg name="stair_length" default="0.3"/>
+
+  <include file="$(find stairs_playground)/launch/playground.launch">
+    <arg name="stair_length" value="$(eval arg('stair_length'))"/>
+  </include>
 
   <node
     name="tf_footprint_base"
     pkg="tf"
     type="static_transform_publisher"
     args="0 0 0 0 0 0 base_link base_footprint 40" />
-  
+
   <param 
     name="robot_description" 
-    command="$(find xacro)/xacro $(find wheelleg_description)/urdf/Quadraped.xacro" />
+    command="$(find xacro)/xacro $(find wheelleg_description)/urdf/Segway.xacro" />
 
   <node
     name="spawn_model"
@@ -25,14 +29,14 @@
     args="pub /calibrated std_msgs/Bool true" />
 
   <rosparam 
-    file="$(find wheelleg_gazebo)/config/WheelLegQuadraped_control.yaml" 
+    file="$(find wheelleg_gazebo)/config/WheelLegSegway_control.yaml" 
     command="load"/>
 
   <node
     name   = "chassisGazeboInterface"
     pkg    = "wheelleg_gazebo"
     type   = "ChassisGazeboInterface.py"
-    args   = "-n WheelLegQuadraped"
+    args   = "-n WheelLegSegway"
     output = "screen"/>
 
   <node
@@ -45,20 +49,14 @@
     pkg="controller_manager" 
     type="spawner" 
     respawn="false"
-    ns="/WheelLegQuadraped" 
+    ns="/WheelLegSegway" 
     args="
-      RB_Joint_velocity_controller
-      RF_Joint_velocity_controller
-      LB_Joint_velocity_controller
-      LF_Joint_velocity_controller
-      RBRA_Joint_position_controller 
-      RFRA_Joint_position_controller 
-      LBRA_Joint_position_controller 
-      LFRA_Joint_position_controller
-      RBRB_Joint_position_controller 
-      RFRB_Joint_position_controller 
-      LBRB_Joint_position_controller 
-      LFRB_Joint_position_controller
+      R_Joint_velocity_controller
+      L_Joint_velocity_controller
+      RRA_Joint_position_controller 
+      RRB_Joint_position_controller 
+      LRA_Joint_position_controller 
+      LRB_Joint_position_controller 
       joint_state_controller"/>
 
     <node 
@@ -66,12 +64,15 @@
       pkg="controller_manager" 
       type="spawner" 
       respawn="false" 
-      ns="/WheelLegQuadraped"
-      args="--stopped 
-      RB_Joint_position_controller
-      RF_Joint_position_controller
-      LB_Joint_position_controller
-      LF_Joint_position_controller"/>
+      ns="/WheelLegSegway"
+      args="--stopped  
+      R_Joint_position_controller
+      L_Joint_position_controller"/>
+
+      <node
+        name="controller"
+        pkg ="wheelleg_segway_control"
+        type="SmachTest.py"/>
 
 
 </launch>

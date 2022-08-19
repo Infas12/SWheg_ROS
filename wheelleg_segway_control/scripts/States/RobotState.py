@@ -15,7 +15,7 @@ class RobotState(smach.State):
         
         smach.State.__init__(self, outcomes=outcomes)
         
-        self.motorNameList = ["RM_Joint","RF_Joint","LF_Joint","LM_Joint","LB_Joint","RB_Joint"]
+        self.motorNameList = ["R_Joint","L_Joint"]
         
         for name in self.motorNameList:
             Motor(name)
@@ -23,15 +23,11 @@ class RobotState(smach.State):
         self.motorControlMode = ContorlMode.SPD_MODE
         self.IsLeggedMode = False
         
-        self.jointPub = rospy.Publisher('/WheelLegHexapod/command',WheelLegControlMsg,queue_size=10)
+        self.jointPub = rospy.Publisher('/WheelLegSegway/command',WheelLegControlMsg,queue_size=10)
         self.joySub   = rospy.Subscriber('joy',Joy,self.JoystickCallback)
         self.joyData  = None
         
-        self.Apressed = False
-        self.Bpressed = False
-        self.Xpressed = False
-        self.Ypressed = False
-        
+        self.stateChangeFlag = False
     
     def execute(self, userdata):
         ROS_INFO("'execute' method must be overridden")
@@ -51,25 +47,8 @@ class RobotState(smach.State):
         self.jointPub.publish(msg)
     
     def JoystickCallback(self,data):
-        
-        if(data.buttons[0]==1 and 
-        (self.joyData is None or self.joyData.buttons[0]!=1) 
-        ): 
-            self.Apressed = True 
-        
         if(data.buttons[1]==1 and 
         (self.joyData is None or self.joyData.buttons[1]!=1) # compare current joystick data with previous data
         ): 
-            self.Bpressed = True
-        
-        if(data.buttons[2]==1 and 
-        (self.joyData is None or self.joyData.buttons[2]!=1) # compare current joystick data with previous data
-        ): 
-            self.Xpressed = True
-            
-        if(data.buttons[3]==1 and 
-        (self.joyData is None or self.joyData.buttons[3]!=1) # compare current joystick data with previous data
-        ): 
-            self.Ypressed = True           
-            
+            self.stateChangeFlag = True # Change state when B is pressed
         self.joyData = data # collect joystick data

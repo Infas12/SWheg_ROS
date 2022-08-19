@@ -16,17 +16,11 @@ class TransitionState(RobotState):
                 
         self.initialPos = {} # initial pos of motors when entering the state
         
-        self.targetPos = {"LF_Joint":0.0,
-                          "LM_Joint":0.0,
-                          "LB_Joint":0.0,
-                          "RB_Joint":0.0,
-                          "RM_Joint":0.0,
-                          "RF_Joint":0.0
+        self.targetPos = {"L_Joint":0.0,
+                          "R_Joint":0.0
                           }
         
         self.changePos = {}
-        
-
         
         self.tramsformCompleted = False # transform complete flag
         
@@ -36,6 +30,7 @@ class TransitionState(RobotState):
         
     def execute(self, userdata):
         r = rospy.Rate(1000)
+        
         
         for name in self.motorNameList:
             self.initialPos[name] = MotorManager.instance().getMotor(name).positionFdb # Get the initial position of the motor
@@ -57,7 +52,7 @@ class TransitionState(RobotState):
                 motor.positionSet = self.initialPos[name] + alpha*self.changePos[name]
                 
             self.sendData()
-            r.sleep()        
+            r.sleep()
         
         return "TransformCompleted"
     

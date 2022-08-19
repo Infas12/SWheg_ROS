@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro"  name="aaa">
+
+  <xacro:include filename="$(find stairs_playground)/urdf/stairs_base.xacro"/>
+ 
+  <xacro:arg name="stair_length" default = "1"   />
+  <xacro:arg name="stair_width"  default = "2"   />
+  <xacro:arg name="stair_height" default = "0.2" />
+  <xacro:arg name="stair_num"    default = "1"   />
+
+  <xacro:group_of_stairs num="$(arg stair_num)" stair_length="$(arg stair_length)" stair_width="$(arg stair_width)" stair_height="$(arg stair_height)"/>
+
+</robot>

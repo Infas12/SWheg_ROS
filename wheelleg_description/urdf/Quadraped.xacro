@@ -17,12 +17,40 @@
   </gazebo>
 
 
-  <!--define joints-->
-  <xacro:LeftWheelLeg name="LF" x="0.4" y="0.2" z="0.02" />
-  <xacro:LeftWheelLeg name="LB" x="-0.4" y="0.2" z="0.02" />
 
-  <xacro:RightWheelLeg name="RF" x="0.4" y="-0.2" z="0.02" />
-  <xacro:RightWheelLeg name="RB" x="-0.4" y="-0.2" z="0.02" />
+   <!--define robot base link-->
+  <link name="base_link">
+    <inertial>
+      <origin xyz="0.05 0.05 0.05" rpy="0 0 0"/>
+      <mass value="1"/>
+      <inertia ixx="0.00167"  ixy="0"  ixz="0" iyy="0.00167" iyz="0" izz="0.00167" />
+    </inertial>
+
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <box size="0.1 0.1 0.1" />
+      </geometry>
+      <material name="Cyan">
+        <color rgba="0 1.0 1.0 1.0"/>
+      </material>
+    </visual>
+
+    <!-- <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.1 0.1 0.1" />
+      </geometry>
+    </collision> -->
+
+  </link>
+
+  <!--define joints-->
+  <xacro:LeftWheelLeg name="LF" x="0.4" y="0.2" z="0.02" parent="base_link" />
+  <xacro:LeftWheelLeg name="LB" x="-0.4" y="0.2" z="0.02" parent="base_link"/>
+
+  <xacro:RightWheelLeg name="RF" x="0.4" y="-0.2" z="0.02" parent="base_link"/>
+  <xacro:RightWheelLeg name="RB" x="-0.4" y="-0.2" z="0.02" parent="base_link"/>
 
 
   <!--add gazebo joint configures-->

@@ -1,11 +1,6 @@
 <launch>
 
-  <include
-    file="$(find wheelleg_gazebo)/launch/empty_world.launch" >
-    <arg name="verbose" value="true" />
-    <arg name="paused" value="true" />
-    <arg name="world_name" value="$(find wheelleg_gazebo)/world/empty.world"/>
-  </include>
+  <include file="$(find stairs_playground)/launch/playground.launch" />
 
   <node
     name="tf_footprint_base"

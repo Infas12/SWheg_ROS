@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="WheelLegSegway">
+
+  <!--load model definations-->
+  <xacro:include filename="$(find wheelleg_description)/urdf/WheelLeg.xacro"/>
+
+  <!--load gazebo specific configuration-->
+  <xacro:include filename="$(find wheelleg_description)/urdf/WheelLeg.gazebo"/>
+
+
+  <!--load control interface for robot-->
+  <gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+      <robotNamespace>/WheelLegSegway</robotNamespace>
+    </plugin>
+  </gazebo>
+
+  <link name="static_base">
+
+    <inertial>
+      <origin xyz="0.05 0.05 0.05" rpy="0 0 0"/>
+      <mass value="1"/>
+      <inertia ixx="0.00167"  ixy="0"  ixz="0" iyy="0.00167" iyz="0" izz="0.00167" />
+    </inertial>
+
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <box size="0.1 0.1 0.1" />
+      </geometry>
+      <material name="Cyan">
+        <color rgba="0 1.0 1.0 1.0"/>
+      </material>
+    </visual>
+
+  </link>
+
+  <gazebo>
+      <joint name ="weld" type="fixed">
+          <parent>world</parent> 
+          <child>static_base</child> 
+      </joint> 
+  </gazebo>
+
+  <joint name="z_dof" type="prismatic">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <parent link="static_base"/>
+    <child link="z_dummy_link"/>
+    <limit effort="30" velocity="100.0" lower="-200" upper="200" />
+    <axis xyz="0 0 1"/>
+  </joint>
+
+  <link name="z_dummy_link">
+
+    <inertial>
+      <origin xyz="0.05 0.05 0.05" rpy="0 0 0"/>
+      <mass value="1"/>
+      <inertia ixx="0.00167"  ixy="0"  ixz="0" iyy="0.00167" iyz="0" izz="0.00167" />
+    </inertial>
+
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <box size="0.1 0.1 0.1" />
+      </geometry>
+      <material name="Cyan">
+        <color rgba="0 1.0 1.0 1.0"/>
+      </material>
+    </visual>
+
+  </link>
+
+  <joint name="x_dof" type="prismatic">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <parent link="z_dummy_link"/>
+    <child link="base_link"/>
+    <limit effort="30" velocity="100.0" lower="-200" upper="200" />
+    <axis xyz="1 0 0"/>\
+  </joint>
+
+
+  <!--define robot base link-->
+  <link name="base_link">
+    <inertial>
+      <origin xyz="0.05 0.05 0.05" rpy="0 0 0"/>
+      <mass value="1"/>
+      <inertia ixx="0.00167"  ixy="0"  ixz="0" iyy="0.00167" iyz="0" izz="0.00167" />
+    </inertial>
+
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <box size="0.1 0.1 0.1" />
+      </geometry>
+      <material name="Cyan">
+        <color rgba="0 1.0 1.0 1.0"/>
+      </material>
+    </visual>
+
+    <!-- <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.1 0.1 0.1" />
+      </geometry>
+    </collision> -->
+
+  </link>
+
+
+  <!--define joints-->
+  <xacro:LeftWheelLeg name="L" x="0" y="0.2" z="0.0" parent="base_link"/>
+  <xacro:RightWheelLeg name="R" x="0" y="-0.2" z="0.0" parent="base_link"/>
+
+  <!--add gazebo joint configures-->
+  <xacro:wheelLegJointConfig name="L" />
+  <xacro:wheelLegJointConfig name="R" />
+
+
+
+</robot>
