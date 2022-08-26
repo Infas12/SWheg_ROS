@@ -23,7 +23,7 @@
 
     <param 
       name="$(arg model_name)" 
-      command="$(find xacro)/xacro $(find stairs_playground)/urdf/stairs.xacro stair_num:=5 stair_width:=$(arg stair_width) stair_height:=$(arg stair_height) stair_length:=$(arg stair_length)" />
+      command="$(find xacro)/xacro $(find stairs_playground)/urdf/stairs.xacro stair_num:=1 stair_width:=$(arg stair_width) stair_height:=$(arg stair_height) stair_length:=$(arg stair_length)" />
 
     <node
       name="spawn_model"

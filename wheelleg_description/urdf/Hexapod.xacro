@@ -7,7 +7,7 @@
 
   <!--load gazebo specific configuration-->
   <xacro:include filename="$(find wheelleg_description)/urdf/WheelLeg.gazebo"/>
-
+  <xacro:include filename="$(find wheelleg_description)/urdf/imu.xacro"/>
 
   <!--load control interface for robot-->
   <gazebo>
@@ -15,12 +15,15 @@
       <robotNamespace>/WheelLegHexapod</robotNamespace>
     </plugin>
   </gazebo>
+  
+
+
 
 
     <!--define robot base link-->
   <link name="base_link">
     <inertial>
-      <origin xyz="0.05 0.05 0.05" rpy="0 0 0"/>
+      <origin xyz="0.25 0.150 0.005" rpy="0 0 0"/>
       <mass value="1"/>
       <inertia ixx="0.00167"  ixy="0"  ixz="0" iyy="0.00167" iyz="0" izz="0.00167" />
     </inertial>
@@ -28,31 +31,91 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <box size="0.1 0.1 0.1" />
+        <box size="0.5 0.300 0.01" />
       </geometry>
       <material name="Cyan">
         <color rgba="0 1.0 1.0 1.0"/>
       </material>
     </visual>
 
-    <!-- <collision>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
+    <collision>
+      <origin xyz="0.25 0.150 0.01" rpy="0 0 0"/>
       <geometry>
-        <box size="0.1 0.1 0.1" />
+        <box size="0.5 0.300 0.01" />
       </geometry>
-    </collision> -->
+    </collision>
 
   </link>
 
+  <joint name="dummy_base" type="fixed">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <parent link="base_link"/>
+    <child link="base_link_decoration"/>
+    <axis xyz="0 0 1"/>
+  </joint>
+
+  <link name="base_link_decoration">
+
+    <inertial>
+      <origin xyz="0.05 0.190 0.005" rpy="0 0 0"/>
+      <mass value="1"/>
+      <inertia ixx="0.00167"  ixy="0"  ixz="0" iyy="0.00167" iyz="0" izz="0.00167" />
+    </inertial>
+
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <box size="0.1 0.380 0.01" />
+      </geometry>
+      <material name="Cyan">
+        <color rgba="0 1.0 1.0 1.0"/>
+      </material>
+    </visual>
+
+  </link>
+
+
+
+
+
+
+
+
+  <xacro:IMU connected_to="base_link" imu_name="imu" xyz="0. 0. .05" rpy="0. 0. 0."/>
+  <gazebo>
+      <plugin name="imu_controller" filename="libgazebo_ros_imu.so">
+      <alwaysOn>true</alwaysOn>
+      <updateRate>30</updateRate>
+      <bodyName>imu</bodyName>   <!--imu_link -->
+      <topicName>imu/data</topicName>
+      <serviceName>imu/is_calibrated</serviceName>
+      <gaussianNoise>0.1</gaussianNoise>
+      <xyzOffsets>0 0 0</xyzOffsets>
+      <rpyOffsets>0 0 0</rpyOffsets>
+      </plugin>
+  </gazebo>
+  <!--publish robot odom to world-->
+
+
+
   <!--define joints-->
-  <xacro:LeftWheelLeg name="LF" x="0.4" y="0.2" z="0.02" parent="base_link"/>
-  <xacro:LeftWheelLeg name="LM" x="0" y="0.3" z="0.02" parent="base_link"/>
-  <xacro:LeftWheelLeg name="LB" x="-0.4" y="0.2" z="0.02" parent="base_link"/>
+  <xacro:LeftWheelLeg name="LF"  x="0.21" y="0.116" z="-0.026" parent="base_link"/>
+  <xacro:joint_box name="LF_Box" x="0.21" y="0.116" z="-0.026" parent="base_link"/>
 
-  <xacro:RightWheelLeg name="RF" x="0.4" y="-0.2" z="0.02" parent="base_link"/>
-  <xacro:RightWheelLeg name="RM" x="0" y="-0.3" z="0.02" parent="base_link"/>
-  <xacro:RightWheelLeg name="RB" x="-0.4" y="-0.2" z="0.02" parent="base_link"/>
+  <xacro:LeftWheelLeg name="LM"  x="0" y="0.168" z="-0.026" parent="base_link"/>
+  <xacro:joint_box name="LM_Box" x="0" y="0.168" z="-0.026" parent="base_link"/>
+  
+  <xacro:LeftWheelLeg name="LB"  x="-0.21" y="0.116" z="-0.026" parent="base_link"/>
+  <xacro:joint_box name="LB_Box" x="-0.21" y="0.116" z="-0.026" parent="base_link"/>
 
+  <xacro:RightWheelLeg name="RF" x="0.21" y="-0.116" z="-0.026" parent="base_link"/>
+  <xacro:joint_box name="RF_Box" x="0.21" y="-0.116" z="-0.026" parent="base_link"/>
+  
+  <xacro:RightWheelLeg name="RM" x="0" y="-0.168" z="-0.026" parent="base_link"/>
+  <xacro:joint_box name="RM_Box" x="0" y="-0.168" z="-0.026" parent="base_link"/>
+  
+  <xacro:RightWheelLeg name="RB" x="-0.21" y="-0.116" z="-0.026" parent="base_link"/>
+  <xacro:joint_box name="RB_Box" x="-0.21" y="-0.116" z="-0.026" parent="base_link"/>
 
   <!--add gazebo joint configures-->
   <xacro:wheelLegJointConfig name="LF" />

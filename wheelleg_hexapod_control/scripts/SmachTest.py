@@ -5,10 +5,12 @@ import smach
 from States.WheelState import WheelState
 from States.LegState import LegState
 from States.StairState import StairState
+from States.RhexState import RhexState
 
 if __name__ == '__main__':
     rospy.init_node("StateMachine")
     sm = smach.StateMachine(outcomes=['exit'])
+    
     with sm:
         smach.StateMachine.add('WHEEL',WheelState(),
                                transitions={'Leg':'LEG','Stairs':'STAIR','Exit':'exit'})

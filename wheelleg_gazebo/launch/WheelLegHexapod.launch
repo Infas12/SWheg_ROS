@@ -1,6 +1,13 @@
 <launch>
 
-  <include file="$(find stairs_playground)/launch/playground.launch" />
+  <!-- <include file="$(find stairs_playground)/launch/playground.launch" /> -->
+
+  <arg name="stair_length" default="0.3"/>
+
+  <include file="$(find stairs_playground)/launch/playground.launch">
+    <arg name="stair_length" value="$(eval arg('stair_length'))"/>
+  </include>
+
 
   <node
     name="tf_footprint_base"
@@ -24,6 +31,12 @@
     pkg="rostopic"
     type="rostopic"
     args="pub /calibrated std_msgs/Bool true" />
+
+  <node
+    name="robot_state_publisher"
+    pkg="robot_state_publisher"
+    type="robot_state_publisher" />
+
 
   <rosparam 
     file="$(find wheelleg_gazebo)/config/WheelLegHexapod_control.yaml" 

@@ -13,14 +13,14 @@
 
   <!--setup playground-->
 
-  <!-- <include file="$(find stairs_playground)/launch/spawn_stairs_playground.launch">
+  <include file="$(find stairs_playground)/launch/spawn_stairs_playground.launch">
     <arg name="initial_x" value = "2"/>
     <arg name="initial_y" value = "1"/>
     <arg name="stair_length" value="$(eval arg('stair_length'))"/>
-    <arg name="initial_height" value ="0.01" />
+    <arg name="initial_height" value ="0.1" />
     <arg name="increment_height" value="0.01"/>
-    <arg name="num_envs" value="15"/>
-  </include> -->
+    <arg name="num_envs" value="10"/>
+  </include>
 
   <!-- <include file="$(find stairs_playground)/launch/spawn_stairs_playground.launch">
     <arg name="num_envs" value="10"/>

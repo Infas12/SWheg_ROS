@@ -10,9 +10,12 @@ names = [
         # "QuadrupedWalk",
         # "QuadrupedWheel",
         # "QuadrupedTrot",
-        "HexapodStair",
-        "HexapodWheel",
-        "HexapodWalk"
+        # "HexapodStair",
+        # "HexapodWheel",
+        # "HexapodWalk",
+        "LegTripod",
+        "LegGait2",
+        "Wheel"
         ]
 
 ranges = {
@@ -20,15 +23,18 @@ ranges = {
         # "QuadrupedWalk":[126,726],
         # "QuadrupedWheel":[0,600],
         # "QuadrupedTrot":[123,723],
-        "HexapodStair":[240,840],
-        "HexapodWheel":[0,600],
-        "HexapodWalk":[0,600]
+        # "HexapodStair":[240,840],
+        # "HexapodWheel":[0,600],
+        # "HexapodWalk":[0,600]
+        "LegTripod":[0,120],
+        "LegGait2":[0,120],
+        "Wheel":[0,120]
 }
 
 data = {}
 
 for name in names:
-    data[name] = pd.read_csv(os.getcwd()+"/csvlogs/"+name+".csv", usecols=["cost"])[ranges[name][0]:ranges[name][1]]
+    data[name] = pd.read_csv("/home/infas12/Desktop/wheelleg_ws/src/util/csvlogs/"+name+".csv", usecols=["cost"])[ranges[name][0]:ranges[name][1]]
     data[name].reset_index(drop=True, inplace=True)
     print(data[name])
     

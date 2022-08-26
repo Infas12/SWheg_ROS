@@ -7,12 +7,12 @@ from States.Motor import MotorManager
 from RobotState import RobotState, ContorlMode
 
 
-class LegState(RobotState):
+class RhexState(RobotState):
     
     def __init__(self):
         RobotState.__init__(self, outcomes=["Wheel","Stairs","Exit"])
         self.motorControlMode = ContorlMode.POS_MODE
-        self.Mode = 1 
+        self.Mode = 2 
         
         self.tick = 0
         self.period = 1500 # gait cycle
@@ -69,8 +69,8 @@ class LegState(RobotState):
             else:
                 # handle joystick command
                 if self.joyData is not None:
-                    self.Vw = 700.0 * self.joyData.axes[0]  
-                    self.Vy = 10.0 * self.joyData.axes[1]
+                    self.Vw = 300.0 * self.joyData.axes[0]  
+                    self.Vy = 10.0 * self.joyData.axes[1] #1->0.2m/s
                     self.Vy = min(3,self.Vy)
                     self.Vy = max(-3,self.Vy) 
                     
@@ -110,7 +110,7 @@ class LegState(RobotState):
     def generate_position(self,period,time_stance,timestamp):
         
         PI = 3.1415926
-        theta_hit   = - (PI - 0.7)
+        theta_hit   = - (2*PI - 0.7)
         theta_leave = - 0.4        
 
         time_flight = period - time_stance
@@ -120,7 +120,7 @@ class LegState(RobotState):
         
         
         k_flight = float(theta_hit - theta_leave) / float(time_flight)
-        k_stance = float(- PI - theta_hit + theta_leave) / float(time_stance)
+        k_stance = float(- 2 * PI - theta_hit + theta_leave) / float(time_stance)
         
         t_leave  = theta_leave / float(k_stance)
         t_hit    = t_leave + time_flight
@@ -133,19 +133,5 @@ class LegState(RobotState):
             angle_in_one_period = theta_leave + (x - t_leave) * k_flight
         else :
             angle_in_one_period = theta_hit + (x - t_hit) * k_stance
-        
-        y = 0
-        
-        if turns >= 0:
-            if turns % 2 == 0: #even
-                y = angle_in_one_period
-            else: #odd
-                y =  PI + angle_in_one_period
-        else:
-            if turns % 2 == 0: #even
-                y = angle_in_one_period
-            else: #odd
-                y = PI + angle_in_one_period            
-        
-        
-        return y
+                  
+        return angle_in_one_period
