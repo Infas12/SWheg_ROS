@@ -17,58 +17,59 @@ class TransformJointController:
     def __init__(self,robotName):
         
         # get wheel joints
-        wheelJointNameList = rospy.get_param('/' + robotName + '/joints')
+        # wheelJointNameList = rospy.get_param('/' + robotName + '/joints')
         
-        # get rim joint name
-        self.rim_joint_A_name_list = []
-        self.rim_joint_B_name_list = []
-        for joint in wheelJointNameList:
-            self.rim_joint_A_name_list.append(joint+"RA")
-            self.rim_joint_B_name_list.append(joint+"RB")
+        # # get rim joint name
+        # self.rim_joint_A_name_list = []
+        # self.rim_joint_B_name_list = []
+        # for joint in wheelJointNameList:
+        #     self.rim_joint_A_name_list.append(joint+"RA")
+        #     self.rim_joint_B_name_list.append(joint+"RB")
         
-        # spawn rim joint controller publishers
-        self.transformer_joint_A_publisher_list = []
-        self.transformer_joint_B_publisher_list = []
-        for name in self.rim_joint_A_name_list:
-            self.transformer_joint_A_publisher_list.append(
-                rospy.Publisher('/' + robotName + '/' + name +'_Joint_position_controller/command',
-                                Float64,
-                                queue_size=10)
-            )
+        # # spawn rim joint controller publishers
+        # self.transformer_joint_A_publisher_list = []
+        # self.transformer_joint_B_publisher_list = []
+        # for name in self.rim_joint_A_name_list:
+        #     self.transformer_joint_A_publisher_list.append(
+        #         rospy.Publisher('/' + robotName + '/' + name +'_Joint_position_controller/command',
+        #                         Float64,
+        #                         queue_size=10)
+        #     )
             
-        for name in self.rim_joint_B_name_list:
-            self.transformer_joint_B_publisher_list.append(
-                rospy.Publisher('/' + robotName + '/' + name +'_Joint_position_controller/command',
-                                Float64,
-                                queue_size=10)
-            )
+        # for name in self.rim_joint_B_name_list:
+        #     self.transformer_joint_B_publisher_list.append(
+        #         rospy.Publisher('/' + robotName + '/' + name +'_Joint_position_controller/command',
+        #                         Float64,
+        #                         queue_size=10)
+        #     )
         
-        # set joint mode
+        # # set joint mode
         self.mode = 0
         self.joint_angle_A = 0.0
         self.joint_angle_B = 0.0
         
-        # register at joint controller manager
+        # # register at joint controller manager
         JointControllerManager.instance().controllerList.append(self)
         
     def SendCommand(self):
         
-        if self.mode == 0:            # Wheel mode
-            self.joint_angle_A = -0.0
-            self.joint_angle_B = -0.0
-        elif self.mode == 1:          # SWheg mode
-            self.joint_angle_A = -0.5
-            self.joint_angle_B = -0.5
-        elif self.mode == 2:          # Rhex mode
-            self.joint_angle_A = -0.5
-            self.joint_angle_B = -0.05
+        # if self.mode == 0:            # Wheel mode
+        #     self.joint_angle_A = -0.0
+        #     self.joint_angle_B = -0.0
+        # elif self.mode == 1:          # SWheg mode
+        #     self.joint_angle_A = -0.5
+        #     self.joint_angle_B = -0.5
+        # elif self.mode == 2:          # Rhex mode
+        #     self.joint_angle_A = -0.5
+        #     self.joint_angle_B = -0.05
             
         
-        for pub in self.transformer_joint_A_publisher_list:
-            pub.publish(self.joint_angle_A)
+        # for pub in self.transformer_joint_A_publisher_list:
+        #     pub.publish(self.joint_angle_A)
         
-        for pub in self.transformer_joint_B_publisher_list:
-            pub.publish(self.joint_angle_B)        
+        # for pub in self.transformer_joint_B_publisher_list:
+        #     pub.publish(self.joint_angle_B)        
+        pass
 
 class WheelJointController:
     

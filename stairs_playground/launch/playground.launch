@@ -2,7 +2,7 @@
 
   <!--empty world-->
 
-  <arg name="stair_length" default="0.3"/>
+  <arg name="stair_length" default="1.0"/>
 
   <include
     file="$(find wheelleg_gazebo)/launch/empty_world.launch" >
@@ -17,7 +17,7 @@
     <arg name="initial_x" value = "2"/>
     <arg name="initial_y" value = "1"/>
     <arg name="stair_length" value="$(eval arg('stair_length'))"/>
-    <arg name="initial_height" value ="0.1" />
+    <arg name="initial_height" value ="0.10" />
     <arg name="increment_height" value="0.01"/>
     <arg name="num_envs" value="10"/>
   </include>

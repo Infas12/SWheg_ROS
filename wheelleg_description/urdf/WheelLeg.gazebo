@@ -3,9 +3,9 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
   <!--add transmission to joints-->
-  <xacro:macro name="rimJointConfig" params="name">
+ <xacro:macro name="rimJointConfig" params="name">
     
-    <transmission name="tran_${name}">
+    <!-- <transmission name="tran_${name}">
       <type>transmission_interface/SimpleTransmission</type>
       <joint name="${name}_Joint">
         <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
@@ -15,7 +15,7 @@
         <mechanicalReduction>1</mechanicalReduction>
       </actuator>
     </transmission>
-    
+     -->
     <gazebo reference="${name}">
       <material>Gazebo/Black</material>
     </gazebo> 

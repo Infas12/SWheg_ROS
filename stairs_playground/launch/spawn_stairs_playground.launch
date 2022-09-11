@@ -6,7 +6,7 @@
   <arg name="initial_height" default ="0.05"/>
   <arg name="increment_height" default="0.01"/>
 
-  <arg name="stair_length" default="0.3"/>
+  <arg name="stair_length" default="1"/>
   <arg name="stair_width" default="2"/>
 
   <arg name="initial_x" default="0"/>

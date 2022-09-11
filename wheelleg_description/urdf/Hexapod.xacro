@@ -23,7 +23,7 @@
     <!--define robot base link-->
   <link name="base_link">
     <inertial>
-      <origin xyz="0.25 0.150 0.005" rpy="0 0 0"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
       <mass value="1"/>
       <inertia ixx="0.00167"  ixy="0"  ixz="0" iyy="0.00167" iyz="0" izz="0.00167" />
     </inertial>
@@ -39,7 +39,7 @@
     </visual>
 
     <collision>
-      <origin xyz="0.25 0.150 0.01" rpy="0 0 0"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
         <box size="0.5 0.300 0.01" />
       </geometry>
@@ -81,12 +81,11 @@
 
 
 
-  <xacro:IMU connected_to="base_link" imu_name="imu" xyz="0. 0. .05" rpy="0. 0. 0."/>
   <gazebo>
       <plugin name="imu_controller" filename="libgazebo_ros_imu.so">
       <alwaysOn>true</alwaysOn>
       <updateRate>30</updateRate>
-      <bodyName>imu</bodyName>   <!--imu_link -->
+      <bodyName>base_link</bodyName>   <!--imu_link -->
       <topicName>imu/data</topicName>
       <serviceName>imu/is_calibrated</serviceName>
       <gaussianNoise>0.1</gaussianNoise>
