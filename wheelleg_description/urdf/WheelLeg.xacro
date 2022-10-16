@@ -194,7 +194,7 @@
     <joint name="${name}RB_Joint" type="fixed">
       <origin
         xyz="0 0.08 0.038242"
-        rpy="3.1416 0 -1.5708" />
+        rpy="3.1416 0 -1.0708" />
       <parent
         link="${name}" />
       <child
@@ -361,7 +361,7 @@
     <joint name="${name}RB_Joint" type="fixed">
       <origin
         xyz="0 0.08 0.038244"
-        rpy="0 0 -1.5708" />
+        rpy="0 0 -2.0708" />
       <parent
         link="${name}" />
       <child
