@@ -74,5 +74,6 @@
         pkg ="wheelleg_segway_control"
         type="SmachTest.py"/>
 
+      <remap from="/camera1/image_raw/compressed" to="/image_raw/compressed" />
 
 </launch>
