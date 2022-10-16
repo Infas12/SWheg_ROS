@@ -44,7 +44,7 @@
   </gazebo>
 
   <joint name="z_dof" type="prismatic">
-    <origin xyz="0 0 0" rpy="0 0 3.1415926"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
     <parent link="static_base"/>
     <child link="z_dummy_link"/>
     <limit effort="30" velocity="100.0" lower="-200" upper="200" />
