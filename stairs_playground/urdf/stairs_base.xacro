@@ -32,9 +32,8 @@
         </link>
         
         <gazebo reference="stair_link_${stairs}">
-            <material>Gazebo/Red</material>
-            <mu1>0.001</mu1>
-            <mu2>0.001</mu2>
+            <mu1>0.1</mu1>
+            <mu2>0.1</mu2>
         </gazebo>
         
 

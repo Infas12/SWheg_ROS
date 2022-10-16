@@ -45,6 +45,13 @@
 
   </link>
 
+
+
+
+
+
+
+
   <!--define joints-->
   <xacro:LeftWheelLeg name="LF" x="0.4" y="0.2" z="0.02" parent="base_link" />
   <xacro:LeftWheelLeg name="LB" x="-0.4" y="0.2" z="0.02" parent="base_link"/>

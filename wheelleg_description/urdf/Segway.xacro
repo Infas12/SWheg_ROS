@@ -44,7 +44,7 @@
   </gazebo>
 
   <joint name="z_dof" type="prismatic">
-    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <origin xyz="0 0 0" rpy="0 0 3.1415926"/>
     <parent link="static_base"/>
     <child link="z_dummy_link"/>
     <limit effort="30" velocity="100.0" lower="-200" upper="200" />
@@ -105,6 +105,21 @@
       </geometry>
     </collision> -->
 
+  </link>
+
+  <joint name="camera_joint" type="fixed">
+    <origin xyz="0 0.7 0" rpy="0 0 -1.570796326794897"/>
+    <parent link="base_link"/>
+    <child link="camera_link"/>
+    <axis xyz="0 0 1"/>
+  </joint>
+
+  <link name="camera_link">
+    <inertial>
+      <origin xyz="0.05 0.05 0.05" rpy="0 0 0"/>
+      <mass value="0.001"/>
+      <inertia ixx="0.000167"  ixy="0"  ixz="0" iyy="0.000167" iyz="0" izz="0.000167" />
+    </inertial>
   </link>
 
 
