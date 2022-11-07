@@ -1,10 +1,10 @@
 # SWheg : Wheel-leg transformable robot
 
-# Introduction 
+## Introduction 
 TBD
 
 
-# Requirements
+## Requirements
 
 - Ubuntu 18.04
 - ROS melodic
@@ -12,7 +12,7 @@ TBD
 - Gazebo9
 - Joy
 
-# Quick Start
+## Quick Start
 
 First, clone and compile the code in an catkin workspace.
 
