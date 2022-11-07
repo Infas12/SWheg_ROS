@@ -1,19 +1,44 @@
-Terminal1:
+# SWheg : Wheel-leg transformable robot
+
+# Introduction 
+TBD
+
+
+# Requirements
+
+- Ubuntu 18.04
+- ROS melodic
+- SMach
+- Gazebo9
+- Joy
+
+# Quick Start
+
+First, clone and compile the code in an catkin workspace.
+
+To start the Simulation, use:
 ```
-roscore
+roslaunch wheelleg_gazebo WheelLegHexapod.launch
+```
+or
+```
+roslaunch wheelleg_gazebo WheelLegQuadraped.launch 
 ```
 
-Terminal2:
+Then, in the second terminal, start the `joy` node.
 ```
-rosrun joy joy_node
-```
-
-Terminal3:
-```
-rosrun wheelleg_real motorController
+rosrun joy joy_node 
 ```
 
-Terminal4:
+Finally, launch the corresponding controller:
+
 ```
-rosrun wheelleg_quadraped_control SmachTest.py
+rosrun wheelleg_hexapod_control SmachTest.py
 ```
+
+or
+
+```
+rosrun wheelleg_quadruped_control SmachTest.py
+```
+
