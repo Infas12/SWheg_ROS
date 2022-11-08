@@ -1,7 +1,9 @@
 # SWheg : Wheel-leg transformable robot
 
-## Introduction 
-TBD
+## Overview
+This repository holds the code for SWheg, a tendon-driven wheel-leg transformable robot.
+
+
 
 
 ## Requirements
@@ -25,12 +27,17 @@ or
 roslaunch wheelleg_gazebo WheelLegQuadraped.launch 
 ```
 
+On the real robot, use:
+```
+rosrun wheelleg_real motorController
+```
+
 Then, in the second terminal, start the `joy` node.
 ```
 rosrun joy joy_node 
 ```
 
-Finally, launch the corresponding controller:
+Finally, launch the corresponding controller in another terminal:
 
 ```
 rosrun wheelleg_hexapod_control SmachTest.py
