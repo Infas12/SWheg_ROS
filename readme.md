@@ -4,7 +4,7 @@
 This repository holds the code for SWheg, a tendon-driven wheel-leg transformable robot.
 
 ![RealRobot](./images/whole_robot.png)
-![Simulation](./images/Simulation.png)  
+![Simulation](./images/simulation.png)  
 
 ## Requirements
 
