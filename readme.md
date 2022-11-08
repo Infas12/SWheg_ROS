@@ -3,8 +3,8 @@
 ## Overview
 This repository holds the code for SWheg, a tendon-driven wheel-leg transformable robot.
 
-
-
+![RealRobot](./images/whole_robot.png)
+![Simulation](./images/Simulation.png)  
 
 ## Requirements
 
@@ -16,7 +16,7 @@ This repository holds the code for SWheg, a tendon-driven wheel-leg transformabl
 
 ## Quick Start
 
-First, clone and compile the code in an catkin workspace.
+First, clone and compile the code in a catkin workspace.
 
 To start the Simulation, use:
 ```
